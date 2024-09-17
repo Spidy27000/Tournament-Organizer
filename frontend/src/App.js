@@ -1,35 +1,17 @@
-import {useState} from 'react';
-import $ from 'jquery';
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
 function App() {
-  const [name,setName] = useState("");
-  const [result, setResult] = useState([]);
-
-  const handleChange = (event) => {
-    setName(event.target.value);
-  }
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = $(event.target)
-    $.ajax({
-      type: "POST",
-      url: form.attr('action'),
-      data: form.serialize(),
-      success(data) { 
-        setResult(JSON.parse(data));
-      } 
-    });
-
-  }
   return (
-    <div>
-      <form action= "http://localhost/api.php" method = "post" onSubmit = {(event) => handleSubmit(event)}>
-        <label htmlFor = "name">name</label>
-        <input type = "text" name = "name" id = "name" value={name} onChange={(event) => handleChange(event)} /> 
-        <button type='submit'>Submit</button>
-      </form>
-      <h1> {result[2]} </h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path='/dashboard' element= {<Dashboard />}/>
+      </Routes>
+    </Router>
   );
 }
 
