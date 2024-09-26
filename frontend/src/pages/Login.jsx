@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Google_authentication from "../components/Google_authentication";
+import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 const Login = ({ setUser }) => {
@@ -12,6 +12,7 @@ const Login = ({ setUser }) => {
     password: "",
   });
 
+  //checking localStorage
   useEffect(() => {
     const checkLocalStorage = () => {
       const storedCredentials = localStorage.getItem("userData");
@@ -33,6 +34,7 @@ const Login = ({ setUser }) => {
     });
   };
 
+  //handling google data
   const handleGoogleLogin = (GoogleCredentials) => {
     const google_data = GoogleCredentials;
     localStorage.setItem("userData", JSON.stringify(google_data));
@@ -41,6 +43,7 @@ const Login = ({ setUser }) => {
     setIsAuthorized(true);
   };
 
+  //If authorized, go to dashboard
   useEffect(() => {
     if (IsAuthorized) {
       console.log("navigating to dashboard");
@@ -48,6 +51,8 @@ const Login = ({ setUser }) => {
     }
   }, [IsAuthorized, navigate_page_to]);
 
+
+  //handling form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const validate = Validate(formData);

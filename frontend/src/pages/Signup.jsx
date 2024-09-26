@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import Google_authentication from "../components/Google_authentication";
+import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 
@@ -15,6 +15,7 @@ const Signup = ({setUser}) => {
   });
 
   const [error, setError] = useState({});
+  const [isSignedUp, setisSignedUp] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -24,11 +25,29 @@ const Signup = ({setUser}) => {
     });
   };
 
+  //If user already signed in
+  useEffect(() => {
+      const storedCredentials = localStorage.getItem("userData");
+      if (storedCredentials && !isSignedUp) {
+        setisSignedUp(true);
+    };
+  }, []);
+
+  useEffect(()=>{
+    
+    if(isSignedUp)
+    {
+      navigate("/dashboard");
+    }
+  },[isSignedUp,navigate])
+
+  //Handle Google Data
   const handleGoogleSignIn = (GoogleCredential) => {
     setUser(GoogleCredential)
-    navigate("/dashboard")
+    setisSignedUp(true);
   }
 
+  //Handling Submit of the form
   const handleSubmit = (e) => {
     e.preventDefault();
     const validate = Validate(formData);
@@ -36,6 +55,9 @@ const Signup = ({setUser}) => {
     if (Object.keys(validate).length === 0) {
       console.log("ok");
       console.log(formData);
+      localStorage.setItem('userData', JSON.stringify(formData));
+      setUser(formData)
+      setisSignedUp(true)
       
     } else {
       console.log("Error");
@@ -43,6 +65,7 @@ const Signup = ({setUser}) => {
     }
   };
 
+  //Show or hide password for style
   const togglePassword = () => {
     const password = document.getElementById("password");
     const password_image = document.getElementById("password_image");
@@ -56,6 +79,7 @@ const Signup = ({setUser}) => {
     }
   };
 
+  //Validation for the form
   const Validate = (data) => {
     const error = {};
     if (!data.name.trim()) {

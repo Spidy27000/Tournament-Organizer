@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'r
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import Tournament from './pages/Tournament';
+import Layout from './component/Layout';
+import Create from './pages/Create';
 
 function App() {
 
@@ -11,7 +14,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for user data in localStorage
+    // Check for user data in localStorage and storing it
     const storedUser = localStorage.getItem('userData');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -19,6 +22,7 @@ function App() {
     setLoading(false);
   }, []);
 
+  //Restricting Access to other pages if no user found
   const ProtectedRoute = ({ children }) => {
     if (loading) {
       return <div>Loading...</div>;
@@ -26,7 +30,7 @@ function App() {
     if (!user) {
       return <Navigate to="/login" replace />;
     }
-    return children;
+    return <Layout>{children}</Layout>;
   };
   return (
     <Router>
@@ -35,9 +39,19 @@ function App() {
         <Route path="/signup" element={<Signup setUser={setUser}/>} />
         <Route path='/dashboard' element= {
           <ProtectedRoute>
-            <Dashboard user={user}/>
+            <Dashboard user={user}/>            
           </ProtectedRoute>
           }/>
+          <Route path='/Tournament' element= {
+          <ProtectedRoute>
+            <Tournament user={user}/>
+          </ProtectedRoute>
+          }/>
+          <Route path='/Create' element= {
+          <ProtectedRoute>
+            <Create user={user}/>
+          </ProtectedRoute>
+          }/>          
       </Routes>
     </Router>
   );
