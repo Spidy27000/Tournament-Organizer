@@ -101,7 +101,7 @@ const Signup = ({setUser}) => {
       <div className="w-[60rem] h-[35rem]  bg-[#ffffff] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
         <div className=" h-full flex-1 flex justify-center items-center">
           <div className=" w-[68%] flex flex-col justify-center gap-2 h-[80%] ">
-            <div className=" leading-[3rem] text-[2.8rem] font-archivo items-start pt-0 pb-3">
+            <div className=" leading-[3rem] text-[2.8rem] font-extrabold items-start pt-0 pb-3">
               <h1>SignUp!</h1>
             </div>
 

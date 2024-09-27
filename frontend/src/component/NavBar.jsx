@@ -1,28 +1,40 @@
-import { Button } from "../components/ui/button"
+import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
-const NavBar = () =>
-{
+import { useState, useEffect } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-    
-    const navigate_to = useNavigate();
-    const toTournament = () => 
-    {
-        const tournament_button = document.getElementById("tournament_button")
-        navigate_to("/Tournament");
-    }
-    const toHome = () => 
-    {
-        navigate_to("/dashboard");
-    }
-    const toCreate = () => 
-    {
-        navigate_to("/create");
-    }
-    
+const NavBar = () => {
+  const [alertBox, setalertBox] = useState(false);
+  const navigate_to = useNavigate();
+  const toTournament = () => {
+    navigate_to("/Tournament");
+  };
+  const toHome = () => {
+    navigate_to("/dashboard");
+  };
+  const toCreate = () => {
+    navigate_to("/create");
+  };
+  const logOutBtn = () => {
+    setalertBox(true);
+  };
+  const logOut = () => {
+    localStorage.clear();
+    navigate_to("/Login");
+  };
 
-
-    return(
-        <div>
+  return (
+    <div>
       <nav className="h-screen w-[15rem] flex flex-col justify-center items-center border-solid border-[1px] border-[#dfd6d6]">
         <div className=" w-[90%] p-5 text-3xl font-extrabold">Game On.</div>
         <div className="flex-1 flex flex-col w-[90%] p-5 gap-5">
@@ -50,7 +62,7 @@ const NavBar = () =>
             Home
           </Button>
           <Button
-          onClick={toTournament}
+            onClick={toTournament}
             variant="outline"
             className=" text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
           >
@@ -95,7 +107,7 @@ const NavBar = () =>
             Tournaments
           </Button>
           <Button
-          onClick={toCreate}
+            onClick={toCreate}
             variant="outline"
             className=" text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
           >
@@ -117,8 +129,54 @@ const NavBar = () =>
             Create
           </Button>
         </div>
-      </nav>
+        <div className="w-[90%] p-7">
+          <Button
+            variant="outline"
+            id="log_out_btn"
+            onClick={logOutBtn}
+            className="w-full text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
+          >
+            <svg
+              height="20"
+              width="20"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              ></path>
+            </svg>
+            Log Out
+          </Button>
+          {alertBox && (
+            <AlertDialog open={alertBox} onOpenChange={setalertBox}>
+              <AlertDialogTrigger asChild></AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action will log out your account
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={logOut}>
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
         </div>
-    )
-}
+      </nav>
+    </div>
+  );
+};
 export default NavBar;

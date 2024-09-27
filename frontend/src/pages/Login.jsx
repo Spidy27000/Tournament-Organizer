@@ -95,7 +95,7 @@ const Login = ({ setUser }) => {
       <div className="w-[60rem] h-[35rem]  bg-[#fff] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
         <div className=" h-full flex-1 flex justify-center items-center">
           <div className=" w-[68%] flex flex-col justify-center gap-1 h-[90%] ">
-            <div className=" leading-[3rem] text-[2.8rem] font-archivo items-start pt-6">
+            <div className=" leading-[3rem] text-[2.8rem] font-extrabold items-start pt-6">
               <h1>Welcome Back!</h1>
             </div>
             <form
