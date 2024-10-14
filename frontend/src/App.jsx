@@ -7,6 +7,7 @@ import Tournament from './pages/Tournament';
 import Layout from './component/Layout';
 import Create from './pages/Create';
 
+
 function App() {
 
   const [user, setUser] = useState();
@@ -51,7 +52,7 @@ function App() {
           <ProtectedRoute>
             <Create user={user}/>
           </ProtectedRoute>
-          }/>          
+          }/>              
       </Routes>
     </Router>
   );

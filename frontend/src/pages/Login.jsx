@@ -92,7 +92,7 @@ const Login = ({ setUser }) => {
 
   return (
     <div className=" flex items-center justify-center h-screen w-screen bg-[#f1efe8]">
-      <div className="w-[60rem] h-[35rem]  bg-[#fff] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
+      <div className="w-[62rem] h-[37rem]  bg-[#fff] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
         <div className=" h-full flex-1 flex justify-center items-center">
           <div className=" w-[68%] flex flex-col justify-center gap-1 h-[90%] ">
             <div className=" leading-[3rem] text-[2.8rem] font-extrabold items-start pt-6">
