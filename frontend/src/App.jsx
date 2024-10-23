@@ -36,6 +36,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/"/>
         <Route path="/login" element={<Login setUser={setUser}/>} />
         <Route path="/signup" element={<Signup setUser={setUser}/>} />
         <Route path='/dashboard' element= {

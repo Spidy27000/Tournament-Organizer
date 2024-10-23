@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:5173");
-require "Router.php";
+require "Router.php";    
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
@@ -11,4 +11,4 @@ if (false !== $pos = strpos($uri, '?')) {
 $uri = rawurldecode($uri);
 
 $router = new Router();
-$router-> dispatch($httpMethod,$uri);
+$router-> dispatch($httpMethod, $uri);

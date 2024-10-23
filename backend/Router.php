@@ -1,5 +1,7 @@
-<?php require "vendor/autoload.php";
-
+<?php 
+require "vendor/autoload.php";
+// require "database/database.php";
+require "controllers/UserControllor.php";
 use FastRoute\RouteCollector;
 
 class Router{
@@ -13,11 +15,8 @@ class Router{
       }
     });
   }
-  public function dispatch($httpMethod,$uri){
-
-    // Dispatch the request
+  public function dispatch($httpMethod, $uri){
     $routeInfo = $this->dispatcher->dispatch($httpMethod, $uri);
-
     switch ($routeInfo[0]) {
       case FastRoute\Dispatcher::NOT_FOUND:
         echo "404 Not Found";
@@ -30,8 +29,9 @@ class Router{
         $vars = $routeInfo[2];
         $handler($vars); 
         break;
+      default:
+        echo $routeInfo;
+        break;
     }
   }
-
-  
 }

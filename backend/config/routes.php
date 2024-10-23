@@ -1,7 +1,6 @@
 <?php
 
+
 return [
-  ["GET","/login",function(){
-    echo json_encode("Hello");
-  }]
+  ["GET","/login/{name}","UserController::login"],
 ];
