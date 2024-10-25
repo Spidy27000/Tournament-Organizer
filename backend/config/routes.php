@@ -2,5 +2,5 @@
 
 
 return [
-  ["GET","/login/{name}","UserController::login"],
+  ["GET","/login","UserController::login"],
 ];

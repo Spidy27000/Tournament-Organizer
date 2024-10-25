@@ -1,26 +1,32 @@
 <?php
-require "database/database.php";
+require "database/usermodel.php";
 
-class UserController{
-    private static $db;
+class UserControllor{
+    private static $usermodel;
 
     public static function init(){
-        self::$db = Database::getInst();
-
-
+        self::$usermodel = new usermodel();
     }
-    //TODO: Make the methord to post
-    public static function login($name){
-        $username = filter_input(INPUT_GET, 'email',FILTER_SANITIZE_EMAIL);
-        $password = filter_input(INPUT_GET, 'password', FILTER_SANITIZE_STRING);
+    //todo: make the methord to post
+    public static function login(){
+        $email = filter_input(input_get, 'email',filter_sanitize_email);
+        $password = filter_input(input_get, 'password', filter_sanitize_string);
+        $res = self::$usermodel -> verify_user($email,$password);
+        if ($res < 0){
+            echo json_encode([
+                'status' => 'Failed',
+            ]);
+        }
+        else{
+
+        }
 
         echo $username . ' ' . $password;
-        var_dump($name);
     }
-    public static function signin($email,$password,$username)
+    public static function signin()
     {
 
     }
 }
 
-UserController::init();
+UserControllor::init();
