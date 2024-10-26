@@ -22,4 +22,8 @@ class Database{
 
         return self::$inst;
     }
+    public function executeQuery($sql, $args){
+        
+    }
+
 }
