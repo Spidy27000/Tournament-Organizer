@@ -1,5 +1,7 @@
 import React from 'react'
-import { SingleElimination } from '../component/brackets'
+import Brackets from '../component/Brackets'
+import SingleElimination from '../component/SingleElimination'
+
 const Tournament = () => {
 
   
@@ -9,11 +11,11 @@ const Tournament = () => {
         <h1 className=" font-extrabold text-[3.5rem]">Public</h1>
       </div>
       <div>
-        <h1 className=" font-extrabold text-[3.5rem]">
-          Private
+        <h1 className=" font-extrabold text-[3.5rem]">Private</h1>
+          
           {/*testing bracket generation*/}
-          <SingleElimination/>
-        </h1>
+          <Brackets/>
+        
       </div>
     </div>
   )

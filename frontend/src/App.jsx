@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Tournament from './pages/Tournament';
 import Layout from './component/Layout';
 import Create from './pages/Create';
+import JoinTournament from './pages/JoinTournament';
+import ViewTournament from './pages/ViewTournament';
 
 
 function App() {
@@ -36,7 +38,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/"/>
+        <Route path="/" element={<Login setUser={setUser}/>}/>
         <Route path="/login" element={<Login setUser={setUser}/>} />
         <Route path="/signup" element={<Signup setUser={setUser}/>} />
         <Route path='/dashboard' element= {
@@ -53,7 +55,17 @@ function App() {
           <ProtectedRoute>
             <Create user={user}/>
           </ProtectedRoute>
-          }/>              
+          }/>
+          <Route path='/joinTournament' element= {
+          <ProtectedRoute>
+            <JoinTournament user={user}/>
+          </ProtectedRoute>
+          }/>
+          <Route path='/ViewTournament/:tournamentId' element= {
+          <ProtectedRoute>
+            <ViewTournament user={user}/>
+          </ProtectedRoute>
+          }/>                 
       </Routes>
     </Router>
   );

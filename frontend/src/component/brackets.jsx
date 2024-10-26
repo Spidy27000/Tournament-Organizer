@@ -8,54 +8,92 @@ import {
   SVGViewer,
 } from "@g-loot/react-tournament-brackets";
 
-const match_info = [
-  {
-    id: 260008,
-    name: "Final - Match",
-    nextMatchId: null,
-    tournamentRoundText: "4",
-    startTime: "2021-05-30",
-    state: "DONE",
-    participants: [
-      {
-        id: "c016cb2a-fdd9-4c40-a81f-0cc6bdf4b9cc",
-        resultText: "WON",
-        isWinner: false,
-        status: null,
-        name: "giacomo123",
-      },
-      {
-        id: "9ea9ce1a-4794-4553-856c-9a3620c0531b",
-        resultText: null,
-        isWinner: true,
-        status: null,
-        name: "Ant",
-      },
-    ],
-  },
-  // ... other matches ...
-];
+const Brackets = () => {
+  
+  // Complete match data structure for a simple 4-player tournament
+  const matches = [
+    {
+      id: 1,
+      name: "Final",
+      nextMatchId: null,
+      tournamentRoundText: "Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "1",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 1"
+        },
+        {
+          id: "2",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 2"
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "Semi Final 1",
+      nextMatchId: 1,
+      tournamentRoundText: "Semi Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "1",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 1"
+        },
+        {
+          id: "3",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "DAN"
+        }
+      ]
+    },
+    {
+      id: 3,
+      name: "Semi Final 2",
+      nextMatchId: 1,
+      tournamentRoundText: "Semi Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "2",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 2"
+        },
+        {
+          id: "4",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 4"
+        }
+      ]
+    }
+  ];
 
-export const DoubleElimination = () => (
-  <DoubleEliminationBracket
-    matches={match_info}
-    matchComponent={Match}
-    svgWrapper={({ children, ...props }) => (
-      <SVGViewer width={500} height={500} {...props}>
-        {children}
-      </SVGViewer>
-    )}
-  />
-);
+  return (
+    <div className="w-full h-screen flex items-center justify-center bg-white">
+      <SingleEliminationBracket
+        matches={matches}
+        matchComponent={Match}
+        options={{
 
-export const SingleElimination = () => (
-  <SingleEliminationBracket
-    matches={match_info}
-    matchComponent={Match}
-    svgWrapper={({ children, ...props }) => (
-      <SVGViewer width={1000} height={1000} {...props}>
-        {children}
-      </SVGViewer>
-    )}
-  />
-);
+        }}
+      />
+    </div>
+  );
+};
+
+export default Brackets;

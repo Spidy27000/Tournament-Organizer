@@ -1,9 +1,23 @@
+import { useNavigate } from "react-router";
 import { Button } from "../components/ui/button";
 
 const TournamentsCard = ({ data }) => {
+
+  const navigate = useNavigate();
+
+  const join_button = () =>
+  {
+    navigate("/joinTournament")
+  }
+
+  const view_tournament = () =>
+  {
+    navigate(`/ViewTournament/${1}`)
+  }
+
   return (
     <>
-      <div className="hover:scale-105 transition-all hover:shadow-lg w-[32%] flex flex-col gap-8 h-[15.5rem] cursor-pointer border-[0.08rem] p-4 bg-[#f6f4f0] rounded-xl shadow-md">
+      <div className="hover:scale-105 transition-all hover:shadow-lg w-[32%] flex flex-col gap-8 h-[15.5rem] cursor-pointer border-[0.08rem] p-4 bg-[#f6f4f0] rounded-xl shadow-md" onClick={view_tournament}>
         <div>
           <h1 className=" line-clamp-1 text-2xl font-bold text-center">VCT Pacific</h1>
         </div>
@@ -18,7 +32,7 @@ const TournamentsCard = ({ data }) => {
             <div>Team2</div>
           </div>
           <div className=" border-t-[0.1rem] pt-3 mt-4 flex justify-between items-center">
-            <Button className=" hover:translate-y-[-3px]  transition-all">
+            <Button className=" hover:translate-y-[-3px]  transition-all" onClick={join_button}>
               Join
             </Button>
             <div className="flex justify-center items-center gap-2 font-bold">
