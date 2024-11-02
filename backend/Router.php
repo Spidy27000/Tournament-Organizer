@@ -1,6 +1,5 @@
 <?php 
 require "vendor/autoload.php";
-// require "database/database.php";
 require "controllers/UserControllor.php";
 use FastRoute\RouteCollector;
 

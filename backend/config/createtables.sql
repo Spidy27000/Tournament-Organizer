@@ -74,14 +74,14 @@ CREATE TABLE `Ladder_Match` (
     `tournament_id` INT NOT NULL,
     `match_number` INT NOT NULL,
     `status` ENUM('On Going', 'Finished', 'Not Started') NOT NULL,
-    FOREIGN KEY (`tournament_id`) REFERENCES `Tournament`(`id`) ON DELETE CASCADE
+    FOREIGN KEY (`tournament_id`) REFERENCES `Tournament`(`id`) ON DELETE SET NULL
 );
 
 CREATE TABLE `Bracket_Match_Points` (
     `team_id` INT NOT NULL,
     `points` INT NOT NULL,
     PRIMARY KEY (`team_id`),
-    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE CASCADE
+    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE SET NULL
 );
 
 CREATE TABLE `Ladder_Match_Points` (
@@ -89,6 +89,6 @@ CREATE TABLE `Ladder_Match_Points` (
     `match_id` INT NOT NULL,
     `points` INT NOT NULL,
     PRIMARY KEY (`team_id`, `match_id`),
-    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`match_id`) REFERENCES `Ladder_Match`(`id`) ON DELETE CASCADE
+    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE SET NULL,
+    FOREIGN KEY (`match_id`) REFERENCES `Ladder_Match`(`id`) ON DELETE SET NULL
 );
