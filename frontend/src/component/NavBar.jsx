@@ -36,7 +36,7 @@ const NavBar = () => {
   return (
     <div>
       <nav className=" sticky top-0 h-screen w-[15rem] flex flex-col justify-center items-center border-solid border-[1px] border-[#dfd6d6]">
-        <div className=" w-[90%] p-5 text-3xl font-extrabold">Game On.</div>
+        <div className=" w-[90%] p-5 text-3xl font-extrabold font-ArchivoBlack">NEXUS</div>
         <div className="flex-1 flex flex-col w-[90%] p-5 gap-5">
           <Button
             onClick={toHome}

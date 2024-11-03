@@ -7,6 +7,13 @@ export default {
 
   ],
   theme: {
+	fontFamily:{
+		'lot': ['Lot'],
+		'ArchivoBlack': ['ArchivoBlack'],
+		'Inter': ['Inter'],
+		'quadHeavy': ['quadHeavy'],
+		'quadUltra': ['quadUltra']
+	},
   	extend: {
   		borderRadius: {
   			lg: 'var(--radius)',

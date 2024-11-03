@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
+import { animated, useSpring } from '@react-spring/web'
 
-
-const Signup = ({setUser}) => {
+const Signup = ({ setUser }) => {
   const navigate = useNavigate();
   const [formData, setformData] = useState({
     name: "",
     email: "",
     password: "",
+  });
+  const [isSignup, setIsSignup] = useState(true);
+
+  const springProps = useSpring({
+    height: isSignup ? "42rem" : "37rem",
+    config: {
+      tension: 300,
+      friction: 20,
+      duration: 300,
+    },
   });
 
   const [error, setError] = useState({});
@@ -27,25 +37,23 @@ const Signup = ({setUser}) => {
 
   //If user already signed in
   useEffect(() => {
-      const storedCredentials = localStorage.getItem("userData");
-      if (storedCredentials && !isSignedUp) {
-        setisSignedUp(true);
-    };
+    const storedCredentials = localStorage.getItem("userData");
+    if (storedCredentials && !isSignedUp) {
+      setisSignedUp(true);
+    }
   }, []);
 
-  useEffect(()=>{
-    
-    if(isSignedUp)
-    {
+  useEffect(() => {
+    if (isSignedUp) {
       navigate("/dashboard");
     }
-  },[isSignedUp,navigate])
+  }, [isSignedUp, navigate]);
 
   //Handle Google Data
   const handleGoogleSignIn = (GoogleCredential) => {
-    setUser(GoogleCredential)
+    setUser(GoogleCredential);
     setisSignedUp(true);
-  }
+  };
 
   //Handling Submit of the form
   const handleSubmit = (e) => {
@@ -55,10 +63,9 @@ const Signup = ({setUser}) => {
     if (Object.keys(validate).length === 0) {
       console.log("ok");
       console.log(formData);
-      localStorage.setItem('userData', JSON.stringify(formData));
-      setUser(formData)
-      setisSignedUp(true)
-      
+      localStorage.setItem("userData", JSON.stringify(formData));
+      setUser(formData);
+      setisSignedUp(true);
     } else {
       console.log("Error");
       console.log(validate);
@@ -98,88 +105,97 @@ const Signup = ({setUser}) => {
 
   return (
     <div className=" flex items-center justify-center h-screen w-screen bg-[#f1efe7]">
-      <div className="w-[60rem] h-[35rem]  bg-[#ffffff] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
+      <animated.div
+        style={springProps}
+        className="w-[62rem] bg-[#f0eae6] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row"
+      >
         <div className=" h-full flex-1 flex justify-center items-center">
-          <div className=" w-[68%] flex flex-col justify-center gap-2 h-[80%] ">
-            <div className=" leading-[3rem] text-[2.8rem] font-extrabold items-start pt-0 pb-3">
-              <h1>SignUp!</h1>
+          <div className=" w-[68%] flex flex-col justify-center h-[95%] gap-11">
+            <div className=" leading-[3rem] text-[3rem] font-extrabold font-ArchivoBlack items-start pb-1">
+              <h1>Sign Up!</h1>
             </div>
 
             <form
               action=""
               onSubmit={handleSubmit}
-              className="flex flex-col justify-center gap-0 h-full"
+              className="flex flex-col justify-center gap-[0.2rem] h-auto"
             >
-              <label className=" mt-2">Name</label>
+              <label className=" font-Inter text-[#696969] text-[0.95rem] pb-1">
+                Name
+              </label>
 
               <input
                 type="text"
                 id="name"
                 value={formData.name}
                 onChange={handleChange}
-                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5"
+                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
               />
-              <span className="text-[0.9rem] text-red-400 h-3">
+              <span className="text-[0.8rem] text-red-400 h-4">
                 {error.name}
               </span>
 
-              <label className=" mt-2">Email</label>
+              <label className=" font-Inter text-[#696969] text-[0.95rem] pb-1">
+                Email
+              </label>
 
               <input
                 type="email"
                 id="email"
                 value={formData.email}
                 onChange={handleChange}
-                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5"
+                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
               />
-              <span className="text-[0.9rem] text-red-400 h-3">
+              <span className="text-[0.8rem] text-red-400 h-4">
                 {error.email}
               </span>
-              <label className=" mt-2">Password</label>
+              <label className=" font-Inter text-[#696969] text-[0.95rem] pb-1">
+                Password
+              </label>
               <div className=" flex relative">
-              <input
-                type="password"
-                id="password"
-                value={formData.password}
-                onChange={handleChange}
-                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5"
-              />
-              <img
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
+                />
+                <img
                   onClick={togglePassword}
                   className=" h-7 absolute right-3 top-[0.4rem] w-7 hover:bg-[#ededed] p-[0.15rem] cursor-pointer rounded-md "
                   src={visible}
                   id="password_image"
                   alt=""
                 ></img>
-                </div>
-              <span className="text-[0.9rem] text-red-400 h-3">
+              </div>
+              <span className="text-[0.8rem] text-red-400 h-4">
                 {error.length || error.password}
               </span>
               <button
                 type="submit"
-                className="bg-[#d97757] h-10 w-full rounded-md text-white mt-5 font-bold cursor-pointer transition duration-75 active:scale-[0.95] active:duration-75 "
+                className="bg-[#d97757] h-10 w-full rounded-md text-white mt-5 font-bold cursor-pointer transition duration-75 active:scale-[0.95] active:duration-75 mb-2"
               >
                 Sign Up
               </button>
-              
-              
-            </form>
-            <Google_authentication onSuccess={handleGoogleSignIn}/>
-            <p className=" text-center text-sm">
+              <Google_authentication onSuccess={handleGoogleSignIn} />
+              <p className=" text-center text-sm font-Inter pt-2 ">
                 Already have an account?
-                <Link className="text-red-400" to="/Login">
+                <Link
+                  className="text-[#d97757]"
+                  to="/Login"
+                  onClick={() => setIsSignup(false)}
+                >
                   {" "}
                   Login{" "}
                 </Link>
               </p>
-            
+            </form>
           </div>
         </div>
-        <div className="flex-1 bg-white rounded-[1rem] h-[95%] m-3 flex items-center justify-center font-archivo text-xl">
-          <img src="" alt="" />
-          <h1>Logo</h1>
+        <div className="flex-1 bg-[#e27b52e5] rounded-[0.65rem] h-[95%] m-4 flex items-center justify-center font-archivo text-xl">
+          <h1 className=" font-lot text-[3rem] text-[#1f201f]">nexus</h1>
         </div>
-      </div>
+      </animated.div>
     </div>
   );
 };

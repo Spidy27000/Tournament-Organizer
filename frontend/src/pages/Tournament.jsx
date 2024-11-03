@@ -1,6 +1,7 @@
 import React from 'react'
 import Brackets from '../component/Brackets'
 import SingleElimination from '../component/SingleElimination'
+import LadderTournamentCard from '../component/LadderTournamentCard'
 
 const Tournament = () => {
 
@@ -12,10 +13,7 @@ const Tournament = () => {
       </div>
       <div>
         <h1 className=" font-extrabold text-[3.5rem]">Private</h1>
-          
-          {/*testing bracket generation*/}
-          <Brackets/>
-        
+        <LadderTournamentCard/>
       </div>
     </div>
   )

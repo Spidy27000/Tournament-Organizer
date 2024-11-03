@@ -1,8 +1,12 @@
 import React from 'react'
+import LadderTournament from '../component/LadderTournament'
 
 const ViewTournament = () => {
   return (
-    <div>ViewTournament</div>
+    <div className=' w-full p-9'>
+    <div></div>
+    <LadderTournament/>
+    </div>
   )
 }
 

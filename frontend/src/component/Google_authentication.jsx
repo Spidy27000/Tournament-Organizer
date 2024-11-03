@@ -45,7 +45,7 @@ const Google_authentication = ({onSuccess}) => {
 
     return(
         <div >
-           <button className=" bg-white border-solid border-[2px] p-2  font-medium rounded-[0.5rem] border-[#dddddd] w-full justify-center flex gap-2 transition duration-75 active:scale-[0.95] active:duration-75" onClick={() => login()}>Continue with Google <img  src={google} alt="My Icon" width="25" height="20" /> </button>
+           <button className=" bg-white border-solid border-[2px] p-2  font-medium rounded-[0.5rem] border-[#dddddd] w-full justify-center flex gap-2 transition duration-75 active:scale-[0.95] active:duration-75" onClick={() => login()}>Continue with <img  src={google} alt="My Icon" width="25" height="20" /> </button>
         </div>
     )
 }

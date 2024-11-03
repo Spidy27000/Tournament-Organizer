@@ -23,20 +23,98 @@ const Dashboard = () => {
     })
   },[])
 
+  const tournamentsData = [
+    {
+      id: 1,
+      tournamentName: "Summer Championship 2024",
+      team1_name: "Thunder Hawks",
+      team2_name: "Lightning Dragons",
+      team1_score: 3,
+      team2_score: 2,
+      status: 'on going',
+    },
+    {
+      id: 2,
+      tournamentName: "Regional Playoffs",
+      team1_name: "Storm Raiders",
+      team2_name: "Desert Eagles",
+      team1_score: 5,
+      team2_score: 5,
+      status: 'on going',
+    },
+    {
+      id: 3,
+      tournamentName: "Pro League Finals",
+      team1_name: "Crimson Knights",
+      team2_name: "Azure Warriors",
+      team1_score: 0,
+      team2_score: 0,
+      status: 'upcoming',
+    },
+    {
+      id: 4,
+      tournamentName: "Winter Cup 2024",
+      team1_name: "Frost Giants",
+      team2_name: "Fire Phoenix",
+      team1_score: 4,
+      team2_score: 2,
+      status: 'completed',
+    },
+    {
+      id: 5,
+      tournamentName: "City League Championship",
+      team1_name: "Urban Legends",
+      team2_name: "Metro Stars",
+      team1_score: 1,
+      team2_score: 3,
+      status: 'on going',
+    },
+    {
+      id: 6,
+      tournamentName: "International Showdown",
+      team1_name: "Global Elite",
+      team2_name: "World Warriors",
+      team1_score: 0,
+      team2_score: 0,
+      status: 'upcoming',
+    },
+    {
+      id: 7,
+      tournamentName: "Community Cup",
+      team1_name: "Local Heroes",
+      team2_name: "Neighborhood Kings",
+      team1_score: 6,
+      team2_score: 3,
+      status: 'completed',
+    },
+    {
+      id: 8,
+      tournamentName: "Elite Tournament",
+      team1_name: "Pro Gamers",
+      team2_name: "Elite Squad",
+      team1_score: 2,
+      team2_score: 2,
+      status: 'on going',
+    },
+    {
+      id: 9,
+      tournamentName: "Champions League",
+      team1_name: "Victory Legion",
+      team2_name: "Trophy Hunters",
+      team1_score: 0,
+      team2_score: 0,
+      status: 'upcoming',
+    }
+  ];
+
   return (
     <div className=" w-full p-9 scroll-smooth">
       <div className="">
         <h1 id="heading" className=" font-extrabold text-[3.5rem]">Hello, {userData.name}</h1>
         <div className=" pt-10 flex flex-wrap gap-6">
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
-          <TournamentsCard/>
+        {tournamentsData.map((tournament) => (
+          <TournamentsCard key={tournament.id} data={tournament}/>
+        ))}
         </div>
       </div>
     </div>
