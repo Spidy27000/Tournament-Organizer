@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
+import { useToast } from "../../hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 const Login = ({ setUser }) => {
   const [IsAuthorized, setIsAuthorized] = useState(false);
   const navigate_page_to = useNavigate();
-  const [apiError, setApiError] = useState("")
+  const { toast } = useToast();
+  const [isApiError, setIsApiError] = useState(false);
+  const [apiError, setApiError] = useState("");
   const [formData, setformData] = useState({
     email: "",
     password: "",
@@ -38,6 +42,8 @@ const Login = ({ setUser }) => {
   //handling google data
   const handleGoogleLogin = (GoogleCredentials) => {
     const google_data = GoogleCredentials;
+    formData.email = google_data.email;
+    formData.password = google_data.password;
     localStorage.setItem("userData", JSON.stringify(google_data));
     setUser(google_data);
     console.log(google_data);
@@ -47,7 +53,6 @@ const Login = ({ setUser }) => {
   //If authorized, go to dashboard
   useEffect(() => {
     if (IsAuthorized) {
-      console.log("navigating to dashboard");
       navigate_page_to("/dashboard");
     }
   }, [IsAuthorized, navigate_page_to]);
@@ -70,22 +75,25 @@ const Login = ({ setUser }) => {
         });
 
         const data = await response.json();
-        console.log(data)
-        if (data.status === "Failed")
-        {
-          console.log("No account matched")
-        }
-        else
-        {
+        console.log(data);
+        if (data.status === "Failed") {
+          console.log("No account matched");
+          setApiError("No Account Found");
+          toast({
+            variant: "destructive",
+            title: "User Not Found",
+            description: data.status,
+          });
+        } else {
           setIsAuthorized(true);
+          localStorage.setItem("userData", JSON.stringify(formData));
+          setUser(formData);
+          console.log(formData);
         }
-      } 
-      catch (err) 
-      {
-        console.log("kuch to gadbad hai")
+      } catch (err) {
+        console.log("kuch to gadbad hai");
         console.log(JSON.stringify(err));
       }
-      
     } else {
       console.log("Error uploading data");
       console.log(validate);
@@ -117,6 +125,7 @@ const Login = ({ setUser }) => {
 
   return (
     <div className=" flex items-center justify-center h-screen w-screen bg-[#f1efe8]">
+      <Toaster />
       <div className="w-[62rem] h-[37rem]  bg-[#f0eae6] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row">
         <div className=" h-full flex-1 flex justify-center items-center">
           <div className=" w-[68%] flex flex-col justify-center gap-1 h-[90%] ">
