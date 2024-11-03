@@ -10,6 +10,7 @@ const Signup = ({ setUser }) => {
   const navigate = useNavigate();
   const [formData, setformData] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -93,13 +94,15 @@ const Signup = ({ setUser }) => {
       error.name = "name is required";
     } else if (!isNaN(data.name)) {
       error.name = "Please enter valid name";
+    } else if (!data.username.trim()){
+      error.username = "Please enter username"
     } else if (!data.email.trim()) {
       error.email = "Please enter your email";
     } else if (!data.password) {
       error.password = "Please enter password";
     } else if (data.password.length < 6) {
       error.length = "Password should be atleast 6 characters long";
-    }
+    } 
     return error;
   };
 
@@ -133,6 +136,21 @@ const Signup = ({ setUser }) => {
               />
               <span className="text-[0.8rem] text-red-400 h-4">
                 {error.name}
+              </span>
+
+              <label className=" font-Inter text-[#696969] text-[0.95rem] pb-1">
+                Username
+              </label>
+
+              <input
+                type="text"
+                id="username"
+                value={formData.username}
+                onChange={handleChange}
+                className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
+              />
+              <span className="text-[0.8rem] text-red-400 h-4">
+                {error.username}
               </span>
 
               <label className=" font-Inter text-[#696969] text-[0.95rem] pb-1">
