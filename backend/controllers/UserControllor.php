@@ -1,5 +1,5 @@
 <?php
-require "database/usermodel.php";
+require "database/UserModel.php";
 
 class UserControllor{
     private static $usermodel;
@@ -9,21 +9,22 @@ class UserControllor{
     }
     //todo: make the methord to post
     public static function login(){
-        $email = filter_input(input_get, 'email',filter_sanitize_email);
-        $password = filter_input(input_get, 'password', filter_sanitize_string);
+        $email = filter_input(INPUT_GET, 'email');
+        $password = filter_input(INPUT_GET, 'password');
         $res = self::$usermodel -> verify_user($email,$password);
-        if ($res < 0){
+        if (count($res) <= 0){
             echo json_encode([
                 'status' => 'Failed',
             ]);
+            return;
         }
-        else{
+        echo json_encode([
+            'status' => "Success",
+            'data' => $res[0]
+        ]); 
 
-        }
-
-        echo $username . ' ' . $password;
     }
-    public static function signin()
+    public static function signUp()
     {
 
     }
