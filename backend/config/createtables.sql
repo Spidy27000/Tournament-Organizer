@@ -9,7 +9,7 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Team` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(100) NOT NULL UNIQUE,
     `no_of_members` INT DEFAULT 1,
     `team_leader_id` INT ,
     FOREIGN KEY (`team_leader_id`) REFERENCES `Users`(`id`) ON DELETE SET NULL
@@ -18,7 +18,7 @@ CREATE TABLE `Team` (
 
 CREATE TABLE `Tournament` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(100) NOT NULL UNIQUE,
     `start_date` DATE NOT NULL,
     `status` ENUM('On Going', 'Finished', 'Not Started') NOT NULL,
     `type` ENUM('Single Elm', 'Double Elm', 'Ladder') NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `Bracket_Match` (
 
 CREATE TABLE `Ladder_Match` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
-    `tournament_id` INT NOT NULL,
+    `tournament_id` INT,
     `match_number` INT NOT NULL,
     `status` ENUM('On Going', 'Finished', 'Not Started') NOT NULL,
     FOREIGN KEY (`tournament_id`) REFERENCES `Tournament`(`id`) ON DELETE SET NULL
@@ -81,7 +81,7 @@ CREATE TABLE `Bracket_Match_Points` (
     `team_id` INT NOT NULL,
     `points` INT NOT NULL,
     PRIMARY KEY (`team_id`),
-    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE SET NULL
+    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `Ladder_Match_Points` (
@@ -89,6 +89,6 @@ CREATE TABLE `Ladder_Match_Points` (
     `match_id` INT NOT NULL,
     `points` INT NOT NULL,
     PRIMARY KEY (`team_id`, `match_id`),
-    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE SET NULL,
-    FOREIGN KEY (`match_id`) REFERENCES `Ladder_Match`(`id`) ON DELETE SET NULL
+    FOREIGN KEY (`team_id`) REFERENCES `Tournament_Teams`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`match_id`) REFERENCES `Ladder_Match`(`id`) ON DELETE CASCADE
 );
