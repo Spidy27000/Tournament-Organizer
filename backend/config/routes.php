@@ -2,6 +2,6 @@
 
 
 return [
-  ["GET", "/login","UserControllor::login"],
+  ["POST", "/login","UserControllor::login"],
   ["POST", "/signup", "UserControllor::signUp"]
 ];

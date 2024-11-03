@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
+
 const Login = ({ setUser }) => {
   const [IsAuthorized, setIsAuthorized] = useState(false);
   const navigate_page_to = useNavigate();
+  const [apiError, setApiError] = useState("")
   const [formData, setformData] = useState({
     email: "",
     password: "",
@@ -16,7 +18,6 @@ const Login = ({ setUser }) => {
   useEffect(() => {
     const checkLocalStorage = () => {
       const storedCredentials = localStorage.getItem("userData");
-      console.log("heloo");
       if (storedCredentials && !IsAuthorized) {
         setIsAuthorized(true);
       }
@@ -51,16 +52,40 @@ const Login = ({ setUser }) => {
     }
   }, [IsAuthorized, navigate_page_to]);
 
-
   //handling form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validate = Validate(formData);
     setError(validate);
     if (Object.keys(validate).length === 0) {
       console.log("ok");
       console.log(formData);
-      setIsAuthorized(true);
+      try {
+        const response = await fetch("http://localhost/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        console.log(data)
+        if (data.status === "Failed")
+        {
+          console.log("No account matched")
+        }
+        else
+        {
+          setIsAuthorized(true);
+        }
+      } 
+      catch (err) 
+      {
+        console.log("kuch to gadbad hai")
+        console.log(JSON.stringify(err));
+      }
+      
     } else {
       console.log("Error uploading data");
       console.log(validate);
@@ -103,7 +128,9 @@ const Login = ({ setUser }) => {
               onSubmit={handleSubmit}
               className="flex flex-col justify-center gap-2 h-full"
             >
-              <label className=" font-Inter text-[#696969] text-[0.95rem]">Email</label>
+              <label className=" font-Inter text-[#696969] text-[0.95rem]">
+                Email
+              </label>
               <input
                 className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
                 type="email"
@@ -115,7 +142,9 @@ const Login = ({ setUser }) => {
                 {error.email && error.email}
               </span>
 
-              <label className=" font-Inter text-[#696969] text-[0.95rem]">Password</label>
+              <label className=" font-Inter text-[#696969] text-[0.95rem]">
+                Password
+              </label>
               <div className=" flex relative">
                 <input
                   className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
