@@ -47,6 +47,7 @@ class Database{
             while($i<$count && $row = $result->fetch_assoc()){
                 $res[$i] = $row;
                 $i++;
+                
             }
         }
         $result->close();
@@ -57,6 +58,4 @@ class Database{
         $result->close();
         return self::$conn->insert_id;
     }
-
-
 }

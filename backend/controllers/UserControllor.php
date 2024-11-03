@@ -5,7 +5,7 @@ class UserControllor{
     private static $usermodel;
 
     public static function init(){
-        self::$usermodel = new usermodel();
+        self::$usermodel = new UserModel();
     }
     //todo: make the methord to post
     public static function login(){
