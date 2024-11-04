@@ -56,7 +56,7 @@ function App() {
             <Create user={user}/>
           </ProtectedRoute>
           }/>
-          <Route path='/joinTournament' element= {
+          <Route path='/joinTournament/:tournamentName' element= {
           <ProtectedRoute>
             <JoinTournament user={user}/>
           </ProtectedRoute>

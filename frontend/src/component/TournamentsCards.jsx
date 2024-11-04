@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router";
 import { Button } from "../components/ui/button";
 
+
 const TournamentsCard = ({ data }) => {
   const navigate = useNavigate();
 
-  const join_button = () => {
-    navigate("/joinTournament");
+  const join_button = (e) => {
+    e.stopPropagation();
+    navigate(`/joinTournament/${data.tournamentName}`);
   };
 
   const view_tournament = () => {
@@ -35,12 +37,15 @@ const TournamentsCard = ({ data }) => {
             <div>{data.team2_name}</div>
           </div>
           <div className=" border-t-[0.1rem] pt-3 mt-4 flex justify-between items-center">
-            <Button
-              className=" hover:translate-y-[-3px]  transition-all"
-              onClick={join_button}
-            >
-              Join
-            </Button>
+            {data.status == "upcoming" && (
+                          <Button
+                          className=" hover:translate-y-[-3px]  transition-all"
+                          onClick={join_button}
+                        >
+                          Join
+                        </Button>
+            )}
+
             <div className="flex justify-center items-center gap-2 font-bold">
               {data.status == "on going" && (
                 <span class="relative flex h-3 w-3">

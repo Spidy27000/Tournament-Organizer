@@ -17,6 +17,10 @@ const Login = ({ setUser }) => {
     email: "",
     password: "",
   });
+  const [userData, setUserData] = useState({
+    email: "",
+    name: ""
+  })
 
   //checking localStorage
   useEffect(() => {
@@ -86,9 +90,11 @@ const Login = ({ setUser }) => {
           });
         } else {
           setIsAuthorized(true);
-          localStorage.setItem("userData", JSON.stringify(formData));
+          console.log(data)
+          userData.email = formData.email
+          userData.name = data.data.username
+          localStorage.setItem("userData", `${JSON.stringify(userData)}`);
           setUser(formData);
-          console.log(formData);
         }
       } catch (err) {
         console.log("kuch to gadbad hai");

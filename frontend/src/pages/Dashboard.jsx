@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import NavBar from "../component/NavBar";
 import { Button } from "../components/ui/button";
 import TournamentsCard from "../component/TournamentsCards";
+import LadderTournament from "../component/LadderTournament";
+import { render } from "react-dom";
+import LadderTournamentCard from "../component/LadderTournamentCard";
 const Dashboard = () => {
 
   const userData = JSON.parse(localStorage.getItem("userData"))
@@ -104,17 +107,34 @@ const Dashboard = () => {
       team1_score: 0,
       team2_score: 0,
       status: 'upcoming',
+    },
+    {
+      id: 10,
+      tournamentName: "Chess International",
+      first_rank: "rOF",
+      type: "ladder",
+      status: "on going"
     }
   ];
+
+  const renderCards = (tournament) =>
+  {
+    if (tournament.type == "ladder")
+    {
+      return <LadderTournamentCard key={tournament.id} data={tournament}/>
+    }
+    else
+    {
+      return <TournamentsCard key={tournament.id} data={tournament}/>
+    }
+  }
 
   return (
     <div className=" w-full p-9 scroll-smooth">
       <div className="">
         <h1 id="heading" className=" font-extrabold text-[3.5rem]">Hello, {userData.name}</h1>
         <div className=" pt-10 flex flex-wrap gap-6">
-        {tournamentsData.map((tournament) => (
-          <TournamentsCard key={tournament.id} data={tournament}/>
-        ))}
+          {tournamentsData.map(renderCards)}
         </div>
       </div>
     </div>
