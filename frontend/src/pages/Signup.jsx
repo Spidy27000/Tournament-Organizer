@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Google_authentication from "../component/Google_authentication";
 import visible from "../res/visibility_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
 import invisible from "../res/visibility_off_24dp_5F6368_FILL0_wght100_GRAD0_opsz24.svg";
-import { animated, useSpring } from '@react-spring/web'
-
+import { animated, useSpring } from "@react-spring/web";
+import { useToast } from "../../hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 const Signup = ({ setUser }) => {
   const navigate = useNavigate();
   const [formData, setformData] = useState({
@@ -15,6 +16,8 @@ const Signup = ({ setUser }) => {
     password: "",
   });
   const [isSignup, setIsSignup] = useState(true);
+  const [ApiError, setApiError] = useState("");
+  const { toast } = useToast();
 
   const springProps = useSpring({
     height: isSignup ? "42rem" : "37rem",
@@ -57,16 +60,44 @@ const Signup = ({ setUser }) => {
   };
 
   //Handling Submit of the form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validate = Validate(formData);
     setError(validate);
     if (Object.keys(validate).length === 0) {
       console.log("ok");
       console.log(formData);
-      localStorage.setItem("userData", JSON.stringify(formData));
-      setUser(formData);
-      setisSignedUp(true);
+      try {
+        const response = await fetch("http://localhost/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.message === "Already Exist") {
+          toast({
+            variant: "destructive",
+            title: "User Not Found",
+            description: data.message,
+          });
+        } else {
+          setisSignedUp(true);
+          setUser(formData);
+          localStorage.setItem("userData", JSON.stringify(formData));
+        }
+      } catch (error) {
+        console.log("Something went wrong" + error);
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
+      }
     } else {
       console.log("Error");
       console.log(validate);
@@ -94,15 +125,15 @@ const Signup = ({ setUser }) => {
       error.name = "name is required";
     } else if (!isNaN(data.name)) {
       error.name = "Please enter valid name";
-    } else if (!data.username.trim()){
-      error.username = "Please enter username"
+    } else if (!data.username.trim()) {
+      error.username = "Please enter username";
     } else if (!data.email.trim()) {
       error.email = "Please enter your email";
     } else if (!data.password) {
       error.password = "Please enter password";
     } else if (data.password.length < 6) {
       error.length = "Password should be atleast 6 characters long";
-    } 
+    }
     return error;
   };
 
@@ -112,6 +143,7 @@ const Signup = ({ setUser }) => {
         style={springProps}
         className="w-[62rem] bg-[#f0eae6] shadow-xl border-solid border-2 border-[#dadada] rounded-[1rem] flex items-center flex-row"
       >
+        <Toaster />
         <div className=" h-full flex-1 flex justify-center items-center">
           <div className=" w-[68%] flex flex-col justify-center h-[95%] gap-11">
             <div className=" leading-[3rem] text-[3rem] font-extrabold font-ArchivoBlack items-start pb-1">

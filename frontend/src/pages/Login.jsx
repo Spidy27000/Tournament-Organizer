@@ -101,7 +101,7 @@ const Login = ({ setUser }) => {
   };
 
   const Validate = (data) => {
-    const error = {};
+    const error = {}; 
     if (!data.email.trim()) {
       error.email = "Please enter email id";
     } else if (!data.password) {

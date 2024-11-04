@@ -34,7 +34,7 @@ class UserControllor{
     }
     public static function signUp()
     {
-
+        
     }
 }
 

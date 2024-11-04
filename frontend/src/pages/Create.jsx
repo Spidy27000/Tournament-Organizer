@@ -29,6 +29,7 @@ const Create = () => {
   const [alertBox, setAlertBox] = useState(false);
   const [visibility, setVisibility] = useState("Private");
   const [type, setType] = useState();
+  const [Error, setIsError] = useState();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setformData] = useState({
@@ -36,6 +37,8 @@ const Create = () => {
     Visibility: "",
     type: "",
     team_or_player: "",
+    max_size: "",
+    max_match: "",
   });
 
   const handleChange = (e) => {
@@ -73,17 +76,12 @@ const Create = () => {
 
   const handleSizeChange = (event) => {
     const newSize = parseInt(event.target.value, 10);
-    setSize(newSize);
+    formData.max_size = newSize;
+  };
 
-    // Create new fields while preserving existing data
-    const newFormData = { ...formData };
-    for (let i = 1; i <= newSize; i++) {
-      const fieldName = `Name_${i}`;
-      if (!newFormData[fieldName]) {
-        newFormData[fieldName] = "";
-      }
-    }
-    setformData(newFormData);
+  const handleMaxMatchChange = (event) => {
+    const newMaxMatch = parseInt(event.target.value, 10);
+    formData.max_match = newMaxMatch;
   };
 
   // const handleTournamentType = () =>
@@ -94,6 +92,7 @@ const Create = () => {
   //     type: value
   //   });
   // }
+
   const single_Elimination = () => {
     setType("single");
     setformData({
@@ -118,35 +117,57 @@ const Create = () => {
 
   const VisibleMaxRound = () => {
     if (type == "ladder") {
-      return(
+      return (
         <>
-                <label className="font-semibold text-[0.95rem]">Max Matches</label>
-        <input
-          type="number"
-          id="Tournament_size"
-          min="2"
-          max="16"
-          className="border-solid border-2 transition-all border-[#e9e8e8] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-28 rounded-md outline-none pl-5 pr-5"
-        />
+          <label className="font-semibold text-[0.95rem]">Max Matches</label>
+          <input
+            type="number"
+            id="Tournament_size"
+            min="2"
+            max="16"
+            onChange={handleMaxMatchChange}
+            className="border-solid border-2 transition-all border-[#e9e8e8] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-28 rounded-md outline-none pl-5 pr-5"
+          />
         </>
-      )
+      );
     }
   };
 
   const isValid = (data) => {
-    return data.Tournament_Name != "";
+    if (data.Tournament_Name == "" || data.Tournament_Name == " ") {
+      return false;
+    }
+    if (data.Visibility == "" || data.Visibility == " ") {
+      return false;
+    }
+    if (data.type == "" || data.type == " ") {
+      return false;
+    }
+    if (data.team_or_player == "" || data.team_or_player == " ") {
+      return false;
+    }
+    if (data.max_size == "" || data.max_size == " ") {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const from_submit = (e) => {
     e.preventDefault();
     const isValidForm = isValid(formData);
+    console.log(isValidForm);
     if (isValidForm) {
       console.log("Valid");
       console.log(formData);
       setAlertBox(true);
     } else {
       console.log("Invalid tournament Name");
-      alert("Please enter all input fields");
+      toast({
+        variant: "destructive",
+        title: "Please fill all the details",
+        description: "No field should be empty",
+      });
     }
   };
 
