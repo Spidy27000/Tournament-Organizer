@@ -80,11 +80,10 @@ const Signup = ({ setUser }) => {
 
         console.log(data);
 
-        if (data.message === "Already Exist") {
+        if (data.status === "failed") {
           toast({
             variant: "destructive",
-            title: "User Not Found",
-            description: data.message,
+            title: data.errorCode,
           });
         } else {
           setisSignedUp(true);
@@ -92,7 +91,7 @@ const Signup = ({ setUser }) => {
           localStorage.setItem("userData", JSON.stringify(formData));
         }
       } catch (error) {
-        console.log("Something went wrong" + error);
+        console.log("Something went wrong");
         toast({
           title: "Something went wrong",
           description: "Please try again later",
