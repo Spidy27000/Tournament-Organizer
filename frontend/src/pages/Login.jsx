@@ -96,9 +96,9 @@ const Login = ({ setUser }) => {
           localStorage.setItem("userData", `${JSON.stringify(userData)}`);
           setUser(formData);
         }
-      } catch (err) {
+      } catch (error) {
         console.log("kuch to gadbad hai");
-        console.log(JSON.stringify(err));
+        console.log(JSON.stringify(error));
       }
     } else {
       console.log("Error uploading data");

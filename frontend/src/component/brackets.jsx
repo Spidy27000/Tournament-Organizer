@@ -84,12 +84,12 @@ const Brackets = () => {
   ];
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-white">
+    <div className="w-full h-screen flex items-center justify-center">
       <SingleEliminationBracket
         matches={matches}
         matchComponent={Match}
         options={{
-
+          
         }}
       />
     </div>

@@ -12,7 +12,7 @@ const TournamentsCard = ({ data }) => {
 
   const view_tournament = () => {
     console.log(data);
-    navigate(`/ViewTournament/${1}`);
+    navigate(`/ViewTournament/${data.id}`);
   };
 
   return (
