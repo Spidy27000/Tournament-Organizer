@@ -3,11 +3,11 @@ require "database/UserModel.php";
 
 class UserControllor
 {
-    private static $usermodel;
+    private static $userModel;
 
     public static function init()
     {
-        self::$usermodel = new UserModel();
+        self::$userModel = new UserModel();
     }
     //todo: make the methord to post
     public static function login()
@@ -21,11 +21,20 @@ class UserControllor
         //getting email and password from the json data
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
-        $res = self::$usermodel->verifyUser($email, $password);
-
-        if (count($res) <= 0) {
+        $res = self::$userModel->emailExists($email);
+        if(!$res){
             echo json_encode([
                 'status' => 'Failed',
+                'error' => 'Email not found'
+            ]);
+            return;
+        }
+        
+        $res = self::$userModel->verifyUser($email, $password);
+        if($res == 0) {
+            echo json_encode([
+                'status' => 'Failed',
+                'error' => 'Incorrect Password'
             ]);
             return;
         }
@@ -46,25 +55,29 @@ class UserControllor
         $username = $data['username'] ?? null;
         $name = $data['name'] ?? null;
         $password = $data['password'] ?? null;
-        if (self::$usermodel->usernameExists($username)) {
+        if (self::$userModel->usernameExists($username)) {
             echo json_encode([
                 'status' => 'failed',
-                'errorCode' => 'Username not available'
+                'errorCode' => 'Username Already Exists'
             ]);
             return;
         }
-        if (self::$usermodel->emailExists($email)) {
+        if (self::$userModel->emailExists($email)) {
             echo json_encode([
                 'status' => 'failed',
-                'errorCode' => 'email aready exists'
+                'errorCode' => 'Email already exists'
             ]);
             return;
         }
-        $res = self::$usermodel->createUser($name, $username, $email, $password);
-        echo json_encode([
+        $res = self::$userModel->createUser($name, $username, $email, $password); echo json_encode([
             'status' => 'success',
             'id' => $res
         ]);
+    }
+    public static function viewUser($id){
+        $data = self::$userModel->getUserData($id);
+        echo json_encode($data);
+
     }
 }
 
