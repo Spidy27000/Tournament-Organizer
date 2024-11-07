@@ -21,6 +21,13 @@ class UserModel
         $count = self::$db->getResult($result, isCount: true);
         return $count[0] > 0;
     }
+    public function isTeamLeader($id)
+    {
+        $sql = "SELECT COUNT(*) FROM team WHERE team_leader_id = ?";
+        $result = self::$db->executeQuery($sql, [$id], 'd');
+        $count = self::$db->getResult($result, isCount: true);
+        return $count[0] > 0;
+    }
 
     public function createUser($name, $username, $email, $password)
     {
@@ -36,8 +43,8 @@ class UserModel
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $args = [$email, $password_hash];
         $result = self::$db->executeQuery($sql, $args, 'ss');
-        $res = self::$db->getResult($result, isCount:true);
-        if (count($res) ==0){
+        $res = self::$db->getResult($result, count:1);
+        if (!$res){
            return 0;
         }
         return $res[0];
@@ -46,7 +53,7 @@ class UserModel
         $sql = "SELECT `name`, `username`, `email`, `team_id` FROM `Users` WHERE `id` = ?";
         $result = self::$db->executeQuery($sql,[$id],'d');
         $res = self::$db->getResult($result, 1);
-        if (count($res) ==0){
+        if (!$res){
            return 0;
         }
         return $res;

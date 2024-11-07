@@ -11,7 +11,7 @@ CREATE TABLE `Team` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL UNIQUE,
     `no_of_members` INT DEFAULT 1,
-    `team_leader_id` INT ,
+    `team_leader_id` INT,
     FOREIGN KEY (`team_leader_id`) REFERENCES `Users`(`id`) ON DELETE SET NULL
 );
 
