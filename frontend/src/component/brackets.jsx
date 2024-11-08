@@ -80,8 +80,100 @@ const Brackets = () => {
           name: "Player 4"
         }
       ]
+    },
+    {
+      id: 4,
+      name: "Quarter Final 1",
+      nextMatchId: 2,
+      tournamentRoundText: "Quarter Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "1",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 1"
+        },
+        {
+          id: "5",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 5"
+        }
+      ]
+    },
+    {
+      id: 5,
+      name: "Quarter Final 2",
+      nextMatchId: 2,
+      tournamentRoundText: "Quarter Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "3",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "DAN"
+        },
+        {
+          id: "6",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 6"
+        }
+      ]
+    },
+    {
+      id: 6,
+      name: "Quarter Final 3",
+      nextMatchId: 3,
+      tournamentRoundText: "Quarter Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "2",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 2"
+        },
+        {
+          id: "7",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 7"
+        }
+      ]
+    },
+    {
+      id: 7,
+      name: "Quarter Final 4",
+      nextMatchId: 3,
+      tournamentRoundText: "Quarter Final",
+      state: "DONE",
+      participants: [
+        {
+          id: "4",
+          resultText: "Won",
+          isWinner: true,
+          status: null,
+          name: "Player 4"
+        },
+        {
+          id: "8",
+          resultText: "Lost",
+          isWinner: false,
+          status: null,
+          name: "Player 8"
+        }
+      ]
     }
-  ];
+];
 
   return (
     <div className="w-full h-screen flex items-center justify-center">

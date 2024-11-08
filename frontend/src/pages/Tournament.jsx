@@ -17,7 +17,7 @@ const Tournament = () => {
   const tournamentData = {
     id: 10,
     tournamentName: "Chess International",
-    first_rank: "rOF",
+    first_rank: "Player",
     type: "ladder",
     status: "on going",
   };
@@ -37,10 +37,12 @@ const Tournament = () => {
     <div className=" p-9 flex flex-col gap-12">
       <div>
         <h1 className=" font-extrabold text-[3.5rem]">Public</h1>
+        {/*fetch data from database for all public tournament created*/}
       </div>
       <div>
         <div className=" flex items-center justify-between">
         <h1 className=" font-extrabold text-[3.5rem]">Private</h1>
+        {/*fetch data from database for all private tournament created*/}
         <div className="">
           <Dialog>
             <DialogTrigger><Button>Add</Button></DialogTrigger>

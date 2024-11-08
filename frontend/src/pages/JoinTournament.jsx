@@ -9,6 +9,7 @@ const JoinTournament = () => {
   const [member_size, setMemberSize] = useState(2);
   const [formData, setFormData] = useState({
     team_name: "",
+    team_leader: userData.name,
     members: Array(member_size).fill(""),
   });
 

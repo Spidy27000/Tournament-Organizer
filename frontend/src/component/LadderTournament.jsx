@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,29 +10,50 @@ import {
 import { Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const LadderTournament = () => {
+const LadderTournament = ({ data, creator, currentMatch, setScore, isLastMatch}) => {
+  const [scoreChange, setScoreChange] = useState(false)
   const [matchData, setMatchData] = useState([
-    {id: 1, teamName: "alpha", points: 0, rank: 1},
-    {id: 2, teamName: "beta", points: 0, rank: 2},
-    {id: 3, teamName: "gamma", points: 0, rank: 3},
-    {id: 4, teamName: "theta", points: 0, rank: 4}
+    { 
+      id: 1, 
+      teamName: "alpha", 
+      points: 0, rank: 1 
+    },
+    { id: 2, 
+      teamName: "beta", 
+      points: 0, rank: 2 
+    },
+    { id: 3, 
+      teamName: "gamma", 
+      points: 0, 
+      rank: 3 
+    },
+    { id: 4, 
+      teamName: "theta", 
+      points: 0, 
+      rank: 4 
+    },
   ]);
 
+  useEffect(()=>{
+    setScore(matchData)  
+  },[matchData])
+
+
   const updatePosition = (teamID, increment) => {
-    let newTeams = matchData.map(teams => {
+    let newTeams = matchData.map((teams) => {
       if (teams.id === teamID) {
         return {
           ...teams,
-          points: increment ? teams.points + 1 : Math.max(0, teams.points - 1)
+          points: increment ? teams.points + 1 : Math.max(0, teams.points - 1),
         };
       }
       return teams;
     });
-    
+
     const sortedTeams = [...newTeams].sort((a, b) => b.points - a.points);
-    
+
     let rank = 1;
-    sortedTeams.forEach(teams => {
+    sortedTeams.forEach((teams) => {
       teams.rank = rank;
       rank = rank + 1;
     });
@@ -42,7 +63,7 @@ const LadderTournament = () => {
 
   return (
     <div className="p-6">
-      <h1 className="font-extrabold text-6xl mb-6">Match 1</h1>
+      <h1 className="font-extrabold text-6xl mb-6">Match {currentMatch}</h1>
       <div className="rounded-lg border-2">
         <Table>
           <TableHeader>
@@ -50,7 +71,7 @@ const LadderTournament = () => {
               <TableHead className="w-24 text-center">Rank</TableHead>
               <TableHead className="text-center">Team</TableHead>
               <TableHead className="text-center">Points</TableHead>
-              <TableHead className="text-center">Action</TableHead>
+              {creator && !isLastMatch && <TableHead className="text-center">Action</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -75,31 +96,32 @@ const LadderTournament = () => {
                   <span className="font-mono">{team.points}</span>
                 </TableCell>
                 <TableCell className="space-x-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="border-2 hover:shadow-md transition-all duration-200 active:scale-95"
-                    onClick={() => updatePosition(team.id, true)}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="border-2 hover:shadow-md transition-all duration-200 active:scale-95"
-                    onClick={() => updatePosition(team.id, false)}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
+                  {creator && !isLastMatch && (
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-2 hover:shadow-md transition-all duration-200 active:scale-95"
+                        onClick={() => updatePosition(team.id, true)}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-2 hover:shadow-md transition-all duration-200 active:scale-95"
+                        onClick={() => updatePosition(team.id, false)}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        
       </div>
-      <Button className=" mt-5">Submit</Button>
-      <Button className=" mt-5 ml-5">End Match</Button>
     </div>
   );
 };

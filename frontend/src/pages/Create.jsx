@@ -161,6 +161,10 @@ const Create = () => {
       console.log("Valid");
       console.log(formData);
       setAlertBox(true);
+      {/*Post data to the tournament*/}
+      {/*Get tournament Id and store it in local storage*/}
+      const tournament_id = 2
+      localStorage.setItem("tournament_creator", tournament_id);
     } else {
       console.log("Invalid tournament Name");
       toast({

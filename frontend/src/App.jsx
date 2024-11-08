@@ -13,7 +13,7 @@ import ViewTournament from './pages/ViewTournament';
 function App() {
 
   const [user, setUser] = useState();
-
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
