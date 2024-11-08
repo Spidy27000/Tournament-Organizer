@@ -28,7 +28,7 @@ class Database
     public function executeQuery($sql, $args = [], $format = '')
     {
         $stmt = self::$conn->prepare($sql);
-        if (!$args) {
+        if ($args) {
             $stmt->bind_param($format, ...$args);
         }
         $stmt->execute();
