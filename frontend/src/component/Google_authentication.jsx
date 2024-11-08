@@ -24,15 +24,8 @@ const Google_authentication = ({onSuccess}) => {
             }
 
             const userData = await response.json();
-            
-            userData.name = userData.given_name;
-            userData.email = userData.email;
-            userData.password = userData.sub;
-
             console.log(userData);
             onSuccess(userData);
-
-            localStorage.setItem('userData', JSON.stringify(userData));
         } catch (error) {
             console.error('Error fetching user data:', error);
         }

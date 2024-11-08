@@ -47,7 +47,7 @@ class UserModel
         if (!$res){
            return 0;
         }
-        return $res[0];
+        return $res['id'];
     }
     public function getUserData($id){
         $sql = "SELECT `name`, `username`, `email`, `team_id` FROM `Users` WHERE `id` = ?";

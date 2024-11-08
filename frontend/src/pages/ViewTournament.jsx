@@ -14,8 +14,9 @@ const ViewTournament = () => {
   // fetch tournament details from the id provided in the parameter
   const tournamentData = {
     Id: tournament_Id,
-    tournament_type: "ladder",
+    tournament_type: "single_elimination",
     max_match: 5,
+    teams: 4
   };
 
   const [score, setScore] = useState({})
@@ -64,7 +65,6 @@ const ViewTournament = () => {
     window.onresize = () => handleSizing()
     const element = document.getElementById('winnerScreen');
     if (element) {
-      // 👇 Will scroll smoothly to the top of the next section
       element.scrollIntoView({ behavior: 'smooth' });
     }
     if (opacityConfetti > 0)
@@ -129,7 +129,7 @@ const ViewTournament = () => {
                     <PartyPopper className=" h-10 w-10"/>
                   <h1 className=" font-extrabold text-[3.8rem] text-center">Winner</h1><PartyPopper className=" h-10 w-10"/></div>
                   <div className=" flex flex-col justify-center items-center gap-8 pt-5">
-                  <div className=" flex bg-[#eee7dd] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
+                  <div className=" flex bg-[#f6f4f0] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
                     <div className=" font-extrabold text-[2.5rem] border-r-2 border-[#d9d5d5] pr-4">
                       1.
                     </div>
@@ -137,7 +137,7 @@ const ViewTournament = () => {
                   <h1 className=" font-extrabold text-[2.5rem] text-center">{score[0].teamName}</h1>
                   </div> 
                   </div>
-                  <div className=" flex bg-[#eee7dd] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
+                  <div className=" flex bg-[#f6f4f0] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
                     <div className=" font-extrabold text-[2.5rem] border-r-2 border-[#d9d5d5] pr-4">
                       2.
                     </div>
@@ -145,7 +145,7 @@ const ViewTournament = () => {
                   <h1 className=" font-extrabold text-[2.5rem] text-center">{score[1].teamName}</h1>
                   </div> 
                   </div>
-                  <div className=" flex bg-[#eee7dd] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
+                  <div className=" flex bg-[#f6f4f0] justify-center items-center w-[42%] rounded-md shadow-lg border-2 p-2">
                     <div className=" font-extrabold text-[2.5rem] border-r-2 border-[#d9d5d5] pr-4">
                       3.
                     </div>

@@ -15,7 +15,7 @@ const Login = ({ setUser }) => {
   const [apiError, setApiError] = useState("");
   const [formData, setformData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   const [userData, setUserData] = useState({
     email: "",
@@ -44,14 +44,48 @@ const Login = ({ setUser }) => {
   };
 
   //handling google data
-  const handleGoogleLogin = (GoogleCredentials) => {
+  const handleGoogleLogin = async (GoogleCredentials) => {
     const google_data = GoogleCredentials;
+    console.log(google_data)
     formData.email = google_data.email;
-    formData.password = google_data.password;
-    localStorage.setItem("userData", JSON.stringify(google_data));
-    setUser(google_data);
+    formData.password = google_data.sub;
+    try {
+      const response = await fetch("http://localhost/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (data.status === "Failed") {
+        console.log("No account matched");
+        console.log(formData)
+        setApiError("No Account Found");
+        toast({
+          variant: "destructive",
+          title: "User Not Found",
+          description: data.error,
+        });
+        return;
+      } else {
+        setIsAuthorized(true);
+        console.log(data)
+        userData.email = formData.email
+        userData.name = data.data.name
+        localStorage.setItem("userData", `${JSON.stringify(userData)}`);
+        setUser(formData);
+      }
+    } catch (error) {
+      console.log("kuch to gadbad hai");
+      console.log(JSON.stringify(error));
+    }
+    // localStorage.setItem("userData", JSON.stringify(google_data));
+    // setUser(google_data);
     console.log(google_data);
-    setIsAuthorized(true);
+
   };
 
   //If authorized, go to dashboard
@@ -69,6 +103,7 @@ const Login = ({ setUser }) => {
     if (Object.keys(validate).length === 0) {
       console.log("ok");
       console.log(formData);
+
       try {
         const response = await fetch("http://localhost/login", {
           method: "POST",
@@ -86,7 +121,7 @@ const Login = ({ setUser }) => {
           toast({
             variant: "destructive",
             title: "User Not Found",
-            description: data.status,
+            description: data.error,
           });
         } else {
           setIsAuthorized(true);
@@ -95,9 +130,14 @@ const Login = ({ setUser }) => {
           userData.name = data.data.username
           localStorage.setItem("userData", `${JSON.stringify(userData)}`);
           setUser(formData);
+          
         }
       } catch (error) {
         console.log("kuch to gadbad hai");
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
         console.log(JSON.stringify(error));
       }
     } else {
@@ -150,7 +190,6 @@ const Login = ({ setUser }) => {
                 className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
                 type="email"
                 id="email"
-                value={formData.email}
                 onChange={handleChange}
               />
               <span className="text-[0.9rem] text-red-400 h-6">
@@ -165,7 +204,6 @@ const Login = ({ setUser }) => {
                   className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
                   type="password"
                   id="password"
-                  value={formData.password}
                   onChange={handleChange}
                 />
                 <img

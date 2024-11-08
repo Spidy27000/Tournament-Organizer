@@ -39,6 +39,10 @@ const Signup = ({ setUser }) => {
     });
   };
 
+  const randomPass = () =>
+  {
+    return Math.floor(Math.random() * 1000000) + 2;
+  }
   //If user already signed in
   useEffect(() => {
     const storedCredentials = localStorage.getItem("userData");
@@ -54,10 +58,42 @@ const Signup = ({ setUser }) => {
   }, [isSignedUp, navigate]);
 
   //Handle Google Data
-  const handleGoogleSignIn = (GoogleCredential) => {
-    setUser(GoogleCredential);
-    setisSignedUp(true);
-  };
+  const handleGoogleSignIn = async (GoogleCredential) => {
+      formData.email = GoogleCredential.email,
+      formData.name = GoogleCredential.name,
+      formData.password = randomPass(),
+      formData.username = GoogleCredential.sub
+    try {
+      const response = await fetch("http://localhost/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status === "failed") {
+        toast({
+          variant: "destructive",
+          title: data.errorCode,
+        });
+      } else {
+        setisSignedUp(true);
+        setUser(formData);
+        localStorage.setItem("userData", JSON.stringify(formData));
+      }
+    } catch (error) {
+      console.log("Something went wrong");
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
+    }
+  }
 
   //Handling Submit of the form
   const handleSubmit = async (e) => {
@@ -161,7 +197,6 @@ const Signup = ({ setUser }) => {
               <input
                 type="text"
                 id="name"
-                value={formData.name}
                 onChange={handleChange}
                 className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
               />
@@ -176,7 +211,6 @@ const Signup = ({ setUser }) => {
               <input
                 type="text"
                 id="username"
-                value={formData.username}
                 onChange={handleChange}
                 className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
               />
@@ -191,7 +225,6 @@ const Signup = ({ setUser }) => {
               <input
                 type="email"
                 id="email"
-                value={formData.email}
                 onChange={handleChange}
                 className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
               />
@@ -205,7 +238,6 @@ const Signup = ({ setUser }) => {
                 <input
                   type="password"
                   id="password"
-                  value={formData.password}
                   onChange={handleChange}
                   className=" border-solid border-2 border-[#dcdcdc] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5 transition-all"
                 />

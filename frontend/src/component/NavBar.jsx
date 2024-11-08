@@ -16,13 +16,25 @@ import {
 const NavBar = () => {
   const [alertBox, setalertBox] = useState(false);
   const navigate_to = useNavigate();
+  const [isHome, setIsHome] = useState(true)
+  const [isTournament, setIsTournament] = useState(false)
+  const [isCreate, setIsCreate] = useState(false)
   const toTournament = () => {
+    setIsHome(false)
+    setIsTournament(true)
+    setIsCreate(false)
     navigate_to("/Tournament");
   };
   const toHome = () => {
+    setIsHome(true)
+    setIsTournament(false)
+    setIsCreate(false)
     navigate_to("/dashboard");
   };
   const toCreate = () => {
+    setIsHome(false)
+    setIsTournament(false)
+    setIsCreate(true)
     navigate_to("/create");
   };
   const logOutBtn = () => {
@@ -36,14 +48,13 @@ const NavBar = () => {
   return (
     <div>
       <nav className=" sticky top-0 h-screen w-[15rem] flex flex-col justify-center items-center border-solid border-[1px] border-[#dfd6d6]">
-        <div className=" w-[90%] p-5 text-3xl font-extrabold font-ArchivoBlack">NEXUS</div>
+        <div className=" w-[90%] p-5 text-[2.5rem] tracking-widest font-lot">NEXUS</div>
         <div className="flex-1 flex flex-col w-[90%] p-5 gap-5">
           <Button
             onClick={toHome}
             id="home_button"
             variant="outline"
-            className=" text-[#948f8f] hover:shadow-sm relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit focus:[#948f8f]"
-          >
+            className= {`text-[#948f8f] hover:shadow-sm relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] transition-all bg-inherit focus:[#948f8f] ${isHome ? 'bg-[#e7e3df] text-[#000]' : "" } `}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -64,7 +75,7 @@ const NavBar = () => {
           <Button
             onClick={toTournament}
             variant="outline"
-            className=" text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
+            className={` text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] transition-all bg-inherit ${isTournament ? 'bg-[#e7e3df] text-[#000]' : "" }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +120,7 @@ const NavBar = () => {
           <Button
             onClick={toCreate}
             variant="outline"
-            className=" text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
+            className={`text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] transition-all bg-inherit ${isCreate ? 'bg-[#e7e3df] text-[#000]' : "" }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +145,7 @@ const NavBar = () => {
             variant="outline"
             id="log_out_btn"
             onClick={logOutBtn}
-            className="w-full text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] bg-inherit"
+            className="w-full text-[#948f8f] relative flex gap-3 justify-start rounded-md transition-all hover:bg-[#e7e3df] bg-inherit"
           >
             <svg
               height="20"

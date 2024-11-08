@@ -7,7 +7,7 @@ const TournamentsCard = ({ data }) => {
 
   const join_button = (e) => {
     e.stopPropagation();
-    navigate(`/joinTournament/${data.tournamentName}`);
+    navigate(`/joinTournament/${data.id}`);
   };
 
   const view_tournament = () => {
