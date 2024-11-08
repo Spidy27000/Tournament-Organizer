@@ -59,10 +59,21 @@ class TeamModel
         $sql = "SELECT username, name".
                 "FROM users".
                 " WHERE team_id = ?";
-        $args = [$team_id, $team_id];
-        $res = self::$db->executeQuery($sql,$args,'dd');
+        $args = [$team_id];
+        $res = self::$db->executeQuery($sql,$args,'d');
         $res = self::$db->getResult($res);
         return $res;
+    }
+    public function deleteMember($team_id, $username){
+        $sql = "UPDATE users SET team_id = NULL WHERE username = ? AND team_id = ?;";
+        $args = [$username, $team_id];
+        $res = self::$db->executeQuery($sql, $args, "sd");
+        $res->close();
+        $sql = "UPDATE team SET no_of_members = no_of_member - 1 WHERE id = ?;";
+        $args = [$team_id];
+        $res = self::$db->executeQuery($sql, $args, "d");
+        $res->close();
+
     }
     
 }
