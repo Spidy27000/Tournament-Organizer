@@ -61,7 +61,7 @@ const Signup = ({ setUser }) => {
   const handleGoogleSignIn = async (GoogleCredential) => {
       formData.email = GoogleCredential.email,
       formData.name = GoogleCredential.name,
-      formData.password = randomPass(),
+      formData.password = GoogleCredential.sub,
       formData.username = GoogleCredential.sub
     try {
       const response = await fetch("http://localhost/signup", {

@@ -14,7 +14,7 @@ const ViewTournament = () => {
   // fetch tournament details from the id provided in the parameter
   const tournamentData = {
     Id: tournament_Id,
-    tournament_type: "single_elimination",
+    tournament_type: "ladder",
     max_match: 5,
     teams: 4
   };

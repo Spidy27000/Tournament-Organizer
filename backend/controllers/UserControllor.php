@@ -71,7 +71,6 @@ class UserControllor
         ]);
     }
     public static function viewUser($id){
-        var_dump($id["id"]);
         $data = self::$userModel->getUserData($id['id']);
         $isTeamLeader = self::$userModel->isTeamLeader($id);
         if($isTeamLeader){

@@ -9,18 +9,19 @@ import { Toaster } from "@/components/ui/toaster";
 
 const Login = ({ setUser }) => {
   const [IsAuthorized, setIsAuthorized] = useState(false);
+  const [Id, setId] = useState();
   const navigate_page_to = useNavigate();
   const { toast } = useToast();
   const [isApiError, setIsApiError] = useState(false);
   const [apiError, setApiError] = useState("");
   const [formData, setformData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [userData, setUserData] = useState({
     email: "",
-    name: ""
-  })
+    name: "",
+  });
 
   //checking localStorage
   useEffect(() => {
@@ -34,6 +35,27 @@ const Login = ({ setUser }) => {
     checkLocalStorage();
   }, []);
 
+  const userInformation = async (id) => {
+    try {
+      const response = await fetch(`http://localhost/view/user/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      const data = await response.json();
+      setIsAuthorized(true);
+      console.log(data);
+      userData.email = data.email;
+      userData.name = data.name;
+      localStorage.setItem("userData", `${JSON.stringify(userData)}`);
+      setUser(formData);
+    } catch (error) {
+      console.log("not having userData from database", error.message);
+    }
+  };
+
   const [error, setError] = useState({});
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -46,7 +68,7 @@ const Login = ({ setUser }) => {
   //handling google data
   const handleGoogleLogin = async (GoogleCredentials) => {
     const google_data = GoogleCredentials;
-    console.log(google_data)
+    console.log(google_data);
     formData.email = google_data.email;
     formData.password = google_data.sub;
     try {
@@ -62,7 +84,7 @@ const Login = ({ setUser }) => {
       console.log(data);
       if (data.status === "Failed") {
         console.log("No account matched");
-        console.log(formData)
+        console.log(formData);
         setApiError("No Account Found");
         toast({
           variant: "destructive",
@@ -71,12 +93,7 @@ const Login = ({ setUser }) => {
         });
         return;
       } else {
-        setIsAuthorized(true);
-        console.log(data)
-        userData.email = formData.email
-        userData.name = data.data.name
-        localStorage.setItem("userData", `${JSON.stringify(userData)}`);
-        setUser(formData);
+        await userInformation(data.id)
       }
     } catch (error) {
       console.log("kuch to gadbad hai");
@@ -85,7 +102,6 @@ const Login = ({ setUser }) => {
     // localStorage.setItem("userData", JSON.stringify(google_data));
     // setUser(google_data);
     console.log(google_data);
-
   };
 
   //If authorized, go to dashboard
@@ -124,13 +140,7 @@ const Login = ({ setUser }) => {
             description: data.error,
           });
         } else {
-          setIsAuthorized(true);
-          console.log(data)
-          userData.email = formData.email
-          userData.name = data.data.username
-          localStorage.setItem("userData", `${JSON.stringify(userData)}`);
-          setUser(formData);
-          
+          await userInformation(data.id)
         }
       } catch (error) {
         console.log("kuch to gadbad hai");
@@ -147,7 +157,7 @@ const Login = ({ setUser }) => {
   };
 
   const Validate = (data) => {
-    const error = {}; 
+    const error = {};
     if (!data.email.trim()) {
       error.email = "Please enter email id";
     } else if (!data.password) {
