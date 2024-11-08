@@ -58,6 +58,17 @@ class TeamControllor
         $res['members'] = self::$teamModel->getMembers($id);
         echo json_encode($res);
     }
+    public static function removeMember(){
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $team_id = $data['team_id'];
+        $username = $data['username'];
+        self::$teamModel->deleteMember($team_id, $username);
+        echo json_encode([
+            'status' => 'Success'
+
+        ]);
+    }
 
 }
 

@@ -6,7 +6,7 @@ return [
   ["POST", "/signup", "UserControllor::signUp"],
   ["GET", "/view/user/{id:\d+}", "UserControllor::viewUser"],
   ['POST', "/createTeam", "TeamControllor::createTeam"],
-  ['POST', "/addmember", "TeamControllor::addMember"],
-  ['GET', "/view/team/{id:\d+}", "TeamControllor::viewTeam"]
+  ['POST', "/addMember", "TeamControllor::addMember"],
+  ['GET', "/view/team/{id:\d+}", "TeamControllor::viewTeam"],
+  ['POST', "/removeMember", "TeamControllor::removeMember"]
 ];
-

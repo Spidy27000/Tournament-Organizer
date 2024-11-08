@@ -10,15 +10,12 @@ class UserControllor
         self::$userModel = new UserModel();
     }
     //todo: make the methord to post
-    public static function login()
-    {
-        //reading raw json cuz the default reads form data only
+    public static function login() {
         $json = file_get_contents('php://input');
 
-        //converting the data into php array
+        //reading raw json cuz the default reads form data only
         $data = json_decode($json, true);
 
-        //getting email and password from the json data
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
         $res = self::$userModel->emailExists($email);
@@ -47,14 +44,13 @@ class UserControllor
     {
         $json = file_get_contents('php://input');
 
-        //reading raw json cuz the default reads form data only
         $data = json_decode($json, true);
 
-        //getting email and password from the json data
         $email = $data['email'] ?? null;
         $username = $data['username'] ?? null;
         $name = $data['name'] ?? null;
         $password = $data['password'] ?? null;
+
         if (self::$userModel->usernameExists($username)) {
             echo json_encode([
                 'status' => 'failed',
