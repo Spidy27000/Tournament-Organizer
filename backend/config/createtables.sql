@@ -19,10 +19,12 @@ CREATE TABLE `Team` (
 CREATE TABLE `Tournament` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL UNIQUE,
-    `start_date` DATE NOT NULL,
     `status` ENUM('On Going', 'Finished', 'Not Started') NOT NULL,
     `type` ENUM('Single Elm', 'Double Elm', 'Ladder') NOT NULL,
     `visibility` ENUM('Public', 'Private') NOT NULL,
+    `player_type` ENUM('Team', 'Single') NOT NULL,
+    `max_teams` INT NOT NULL,
+    `total_matches` INT NOT NULL,
     `organizer_id` INT NOT NULL,
     FOREIGN KEY (`organizer_id`) REFERENCES `Users`(`id`) ON DELETE CASCADE
 );
@@ -32,7 +34,7 @@ CREATE TABLE `Tournament_Teams` (
     `tournament_id` INT NOT NULL,
     `team_id` INT,
     `user_id` INT,
-    `type` ENUM('Team', 'Individual') NOT NULL,
+    `type` ENUM('Team', 'Single') NOT NULL,
     FOREIGN KEY (`tournament_id`) REFERENCES `Tournament`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`team_id`) REFERENCES `Team`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`) ON DELETE CASCADE

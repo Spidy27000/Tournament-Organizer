@@ -72,7 +72,7 @@ class UserControllor
     }
     public static function viewUser($id){
         $data = self::$userModel->getUserData($id['id']);
-        $isTeamLeader = self::$userModel->isTeamLeader($id);
+        $isTeamLeader = self::$userModel->isTeamLeader($id['id']);
         if($isTeamLeader){
             $data['team_leader'] = true;
         }else{
