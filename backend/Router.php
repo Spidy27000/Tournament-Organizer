@@ -1,6 +1,7 @@
 <?php 
 require "vendor/autoload.php";
 require "controllers/UserControllor.php";
+require "controllers/TeamControllor.php";
 use FastRoute\RouteCollector;
 
 class Router{

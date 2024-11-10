@@ -8,6 +8,7 @@ import Layout from './component/Layout';
 import Create from './pages/Create';
 import JoinTournament from './pages/JoinTournament';
 import ViewTournament from './pages/ViewTournament';
+import Team from './pages/Team';
 
 
 function App() {
@@ -65,7 +66,12 @@ function App() {
           <ProtectedRoute>
             <ViewTournament user={user}/>
           </ProtectedRoute>
-          }/>                 
+          }/>
+          <Route path='/Team' element= {
+          <ProtectedRoute>
+            <Team user={user}/>
+          </ProtectedRoute>
+          }/>                    
       </Routes>
     </Router>
   );

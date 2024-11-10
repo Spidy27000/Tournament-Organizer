@@ -24,7 +24,7 @@ class UserModel
     public function isTeamLeader($id)
     {
         $sql = "SELECT COUNT(*) FROM team WHERE team_leader_id = ?";
-        $result = self::$db->executeQuery($sql, [$id], 'd');
+        $result = self::$db->executeQuery($sql, [$id], 'i');
         $count = self::$db->getResult($result, isCount: true);
         return $count[0] > 0;
     }
@@ -50,7 +50,7 @@ class UserModel
     }
     public function getUserData($id){
         $sql = "SELECT `name`, `username`, `email`, `team_id` FROM `Users` WHERE `id` = ?";
-        $result = self::$db->executeQuery($sql,[$id],'d');
+        $result = self::$db->executeQuery($sql,[$id],'i');
         $res = self::$db->getResult($result, 1);
         if (!$res){
            return 0;

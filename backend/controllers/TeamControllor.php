@@ -19,7 +19,7 @@ class TeamControllor
         if ($res){
             echo json_encode([
                 'status' => 'Failed',
-                'error' => 'Team name allready taken'
+                'error' => 'Team name already taken'
             ]);
             return;
         }

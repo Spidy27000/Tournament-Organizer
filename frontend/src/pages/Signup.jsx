@@ -39,10 +39,6 @@ const Signup = ({ setUser }) => {
     });
   };
 
-  const randomPass = () =>
-  {
-    return Math.floor(Math.random() * 1000000) + 2;
-  }
   //If user already signed in
   useEffect(() => {
     const storedCredentials = localStorage.getItem("userData");
@@ -57,12 +53,16 @@ const Signup = ({ setUser }) => {
     }
   }, [isSignedUp, navigate]);
 
+  const getName = (email) => {
+    return email.substring(0, email.indexOf("@"))
+  }
+
   //Handle Google Data
   const handleGoogleSignIn = async (GoogleCredential) => {
       formData.email = GoogleCredential.email,
       formData.name = GoogleCredential.name,
       formData.password = GoogleCredential.sub,
-      formData.username = GoogleCredential.sub
+      formData.username = getName(GoogleCredential.email)
     try {
       const response = await fetch("http://localhost/signup", {
         method: "POST",
@@ -84,6 +84,7 @@ const Signup = ({ setUser }) => {
       } else {
         setisSignedUp(true);
         setUser(formData);
+        localStorage.setItem("userId", data.id)
         localStorage.setItem("userData", JSON.stringify(formData));
       }
     } catch (error) {
@@ -124,6 +125,7 @@ const Signup = ({ setUser }) => {
         } else {
           setisSignedUp(true);
           setUser(formData);
+          localStorage.setItem("userId", data.id)
           localStorage.setItem("userData", JSON.stringify(formData));
         }
       } catch (error) {

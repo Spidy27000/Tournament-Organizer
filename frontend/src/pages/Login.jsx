@@ -20,7 +20,7 @@ const Login = ({ setUser }) => {
   });
   const [userData, setUserData] = useState({
     email: "",
-    name: "",
+    username: "",
   });
 
   //checking localStorage
@@ -48,7 +48,7 @@ const Login = ({ setUser }) => {
       setIsAuthorized(true);
       console.log(data);
       userData.email = data.email;
-      userData.name = data.name;
+      userData.username = data.username;
       localStorage.setItem("userData", `${JSON.stringify(userData)}`);
       setUser(formData);
     } catch (error) {
@@ -93,6 +93,7 @@ const Login = ({ setUser }) => {
         });
         return;
       } else {
+        localStorage.setItem("userId", data.id)
         await userInformation(data.id)
       }
     } catch (error) {
@@ -140,6 +141,7 @@ const Login = ({ setUser }) => {
             description: data.error,
           });
         } else {
+          localStorage.setItem("userId", data.id)
           await userInformation(data.id)
         }
       } catch (error) {

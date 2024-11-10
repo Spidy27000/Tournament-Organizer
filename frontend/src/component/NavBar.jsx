@@ -19,24 +19,35 @@ const NavBar = () => {
   const [isHome, setIsHome] = useState(true)
   const [isTournament, setIsTournament] = useState(false)
   const [isCreate, setIsCreate] = useState(false)
+  const [isTeam, setIsTeam] = useState(false)
   const toTournament = () => {
     setIsHome(false)
     setIsTournament(true)
     setIsCreate(false)
+    setIsTeam(false)
     navigate_to("/Tournament");
   };
   const toHome = () => {
     setIsHome(true)
     setIsTournament(false)
     setIsCreate(false)
+    setIsTeam(false)
     navigate_to("/dashboard");
   };
   const toCreate = () => {
     setIsHome(false)
     setIsTournament(false)
     setIsCreate(true)
+    setIsTeam(false)
     navigate_to("/create");
   };
+  const toTeam = () => {
+    setIsHome(false)
+    setIsTournament(false)
+    setIsCreate(false)
+    setIsTeam(true)
+    navigate_to("/Team");
+  }
   const logOutBtn = () => {
     setalertBox(true);
   };
@@ -138,6 +149,14 @@ const NavBar = () => {
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
             Create
+          </Button>
+          <Button
+            onClick={toTeam}
+            variant="outline"
+            className={`text-[#948f8f] relative flex gap-3 justify-start rounded-md hover:bg-[#e7e3df] transition-all bg-inherit ${isTeam ? 'bg-[#e7e3df] text-[#000]' : "" }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Team
           </Button>
         </div>
         <div className="w-[90%] p-7">

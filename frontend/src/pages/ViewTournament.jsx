@@ -29,6 +29,7 @@ const ViewTournament = () => {
   const [isCreator, setIsCreator] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false)
   const [opacityConfetti, setOpacityConfetti] = useState(1)
+  const [isTeamLeader, setIsTeamLeader] = useState(true)
   const tournamentId = tournamentData.Id;
 
   const storedTournament = JSON.parse(

@@ -133,7 +133,7 @@
     return (
       <div className=" w-full p-9 scroll-smooth">
         <div className="">
-          <h1 id="heading" className=" font-extrabold text-[3.5rem]">Hello, {userData.name}</h1>
+          <h1 id="heading" className=" font-extrabold text-[3.5rem]">Hello, {userData.username}</h1>
           <div className=" pt-10 flex flex-wrap gap-6">
             {tournamentsData.map(renderCards)}
           </div>

@@ -1,24 +1,48 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { useState, useEffect } from "react";
+import { useToast } from "../../hooks/use-toast";
 
 
 const JoinTournament = () => {
   const param = useParams();
-  const tournament_Name = param.tournamentName;
+  const { toast } = useToast();
+  const tournamentId = param.tournamentName;
   const userData = JSON.parse(localStorage.getItem("userData"));
   const [member_size, setMemberSize] = useState(2);
   const [isEmpty, setIsEmpty] = useState(false)
+  const [team_id, setTeamId] = useState()
+  const [createdTeam, setCreatedTeam] = useState(false)
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     team_name: "",
     team_leader: userData.name,
     members: Array(member_size).fill(""),
   });
+  const [createTeam, setCreateTeam] = useState({
+    name: "",
+    id: ""
+  })
+  const [addMember, setAddMember] = useState({
+    team_id: "",
+    username:""
+  })
 
   const tournamentData ={
-    teams: 5,
+    teams: 4,
     max_size: 5
   }
+
+  useEffect(()=>{
+    if (createdTeam)
+    {
+      navigate(`/ViewTournament/${tournamentId}`)
+      toast({
+        title: "Success",
+        description: "Team Created Successfully",
+      });
+    }
+  },[createdTeam])
 
   useEffect(()=>{
     const handleIsEmpty = () =>
@@ -68,10 +92,82 @@ const JoinTournament = () => {
     ));
   };
 
-  const handleSubmit = (e) =>
+  const handleAddMember = async (id) => {
+    addMember.team_id = id
+    addMember.username = "anurag"
+    try {
+      const response = await fetch("http://localhost/addMember", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addMember),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (data.status === "Failed") {
+        console.log("No account matched");
+        console.log(formData);
+        setApiError("No Account Found");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: data.error,
+        });
+        return;
+      } else {
+        console.log(data)
+      }
+    } catch (error) {
+      console.log("kuch to gadbad hai");
+      console.log(JSON.stringify(error));
+    }
+  }
+
+  const handleSubmit = async (e) =>
   {
     e.preventDefault();
+    if (formData.team_name == "" || formData.team_name == " ")
+    {
+      toast({
+        variant: "destructive",
+        title: "Please Enter Team Name"
+      })
+      return
+    }
+    createTeam.name = formData.team_name
+    createTeam.id = JSON.parse(localStorage.getItem("userId"))
     console.log(formData)
+    try {
+      const response = await fetch("http://localhost/createTeam", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(createTeam),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (data.status === "Failed") {
+        console.log("No account matched");
+        console.log(formData);
+        setApiError("No Account Found");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: data.error,
+        });
+        return;
+      } else {
+        console.log(data)
+        setCreatedTeam(true);
+      }
+    } catch (error) {
+      console.log("kuch to gadbad hai");
+      console.log(JSON.stringify(error));
+    }
   }
 
   return (
@@ -95,7 +191,7 @@ const JoinTournament = () => {
             <form
             action=""
             onSubmit={handleSubmit}
-            className=" min-h-96 w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
+            className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
           >
             <h1 className=" text-2xl font-bold">Team Leader</h1>
             <h2 className=" text-md font-semibold">{userData.name} (You)</h2>
@@ -109,18 +205,6 @@ const JoinTournament = () => {
               onChange={(e) =>
                 setFormData({ ...formData, team_name: e.target.value })}
             />
-            <h1 className=" text-2xl font-bold pt-5 pb-5">Add Team Members</h1>
-            <label className=" font-semibold text-[0.95rem]">Team Size</label>
-            <input
-              type="number"
-              id="Team_Size"
-              min="2"
-              max="16"
-              value={member_size}
-              onChange={handleSizeChange}
-              className=" border-solid border-2 transition-all border-[#e9e8e8] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-28 rounded-md outline-none pl-5 pr-5"
-            />
-            <div>{dynamicFields()}</div>
             <Button type="submit" className=" hover:translate-y-[-3px] w-28 transition-all mt-5">
               Create Team
             </Button>

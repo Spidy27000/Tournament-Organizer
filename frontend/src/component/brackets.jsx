@@ -70,7 +70,7 @@ const Brackets = () => {
           resultText: "Won",
           isWinner: true,
           status: null,
-          name: "Player 2"
+          name: "Player 2",
         },
         {
           id: "4",
@@ -159,14 +159,14 @@ const Brackets = () => {
       participants: [
         {
           id: "4",
-          resultText: "Won",
+          resultText: "2",
           isWinner: true,
           status: null,
           name: "Player 4"
         },
         {
           id: "8",
-          resultText: "Lost",
+          resultText: "1",
           isWinner: false,
           status: null,
           name: "Player 8"
