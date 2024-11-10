@@ -2,6 +2,7 @@
 require "vendor/autoload.php";
 require "controllers/UserControllor.php";
 require "controllers/TeamControllor.php";
+require "./controllers/TournamentControllor.php";
 use FastRoute\RouteCollector;
 
 class Router{

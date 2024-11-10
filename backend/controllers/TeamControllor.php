@@ -1,5 +1,6 @@
 <?php
 require "database/TeamModel.php";
+require "database/UserModel.php";
 
 class TeamControllor
 {
@@ -36,7 +37,8 @@ class TeamControllor
         $data = json_decode($json, true);
         $team_id = $data['team_id'] ?? null;
         $username = $data['username'] ?? null;
-        $user_id = self::$teamModel->getUserId($username);
+        $userModel = new UserModel();
+        $user_id = $userModel->getUserId($username);
         if($user_id == 0){
             echo json_encode([
                 'status' => 'Failed',
@@ -55,6 +57,7 @@ class TeamControllor
         $id = $args['id'];
         $res = [];
         $res['team_name'] = self::$teamModel->getTeamName($id);
+        $res["no_of_members"] = self::$teamModel->getNoOfMembers($id); 
         $res['members'] = self::$teamModel->getMembers($id);
         echo json_encode($res);
     }

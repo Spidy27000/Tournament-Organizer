@@ -25,23 +25,13 @@ class TeamModel
         $res->close();
         return $id;
     }
-    public function getUserId($username){
-        $sql = "SELECT `id` FROM `Users` WHERE `username`=?;";
-        $args = [$username];
-        $result = self::$db->executeQuery($sql, $args, 's');
-        $res = self::$db->getResult($result, count:1);
-        if (!$res){
-           return 0;
-        }
-        return $res;
-    }
     public function addMember($user_id, $team_id){
         //set team_id in user
         $sql = "UPDATE users SET team_id = ? WHERE id = ?;";
         $args = [$team_id, $user_id];
         $res = self::$db->executeQuery($sql,$args,'ii');
         //update no_of_members
-        $sql = "UPDATE team SET no_of_member = no_of_member + 1 WHERE id = ?;";
+        $sql = "UPDATE team SET no_of_members = no_of_members + 1 WHERE id = ?;";
         $args = [$team_id];
         $res = self::$db->executeQuery($sql,$args,'i');
         $res->close();
@@ -51,16 +41,20 @@ class TeamModel
         $args = [$team_id];
         $result = self::$db->executeQuery($sql, $args, 'i');
         $res = self::$db->getResult($result, count:1);
-        return $res;
-
+        return $res['name'];
+    }
+    public function getNoOfMembers($team_id){
+        $sql = "SELECT `no_of_members` FROM `team` WHERE `id`=?;";
+        $args = [$team_id];
+        $result = self::$db->executeQuery($sql, $args, 'i');
+        $res = self::$db->getResult($result, count:1);
+        return $res['no_of_members'];
     }
 
     public function getMembers($team_id){
-        $sql = "SELECT username, name " .
-               "FROM users " .
-               "WHERE team_id = ?";
+        $sql = "SELECT username, name FROM users WHERE team_id = ?";
         $args = [$team_id];
-        $res = self::$db->executeQuery($sql, $args, 'i');
+        $res = self::$db->executeQuery($sql,$args,'i');
         $res = self::$db->getResult($res);
         return $res;
     }
@@ -69,11 +63,9 @@ class TeamModel
         $args = [$username, $team_id];
         $res = self::$db->executeQuery($sql, $args, "si");
         $res->close();
-        $sql = "UPDATE team SET no_of_members = no_of_member - 1 WHERE id = ?;";
+        $sql = "UPDATE team SET no_of_members = no_of_members - 1 WHERE id = ?;";
         $args = [$team_id];
         $res = self::$db->executeQuery($sql, $args, "i");
         $res->close();
-
     }
-    
 }
