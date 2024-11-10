@@ -25,6 +25,7 @@ import {
 
 const Create = () => {
   const [size, setSize] = useState();
+  const userId = JSON.parse(localStorage.getItem("userId"));
   const [selection, setSelection] = useState("Team");
   const [alertBox, setAlertBox] = useState(false);
   const [visibility, setVisibility] = useState("Private");
@@ -33,12 +34,13 @@ const Create = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setformData] = useState({
-    Tournament_Name: "",
-    Visibility: "",
+    name: "",
+    visibility: "",
     type: "",
-    team_or_player: "",
+    single_or_team: "",
     max_size: "",
-    max_match: "",
+    no_of_matches: "",
+    user_id: userId,
   });
 
   const handleChange = (e) => {
@@ -62,7 +64,7 @@ const Create = () => {
     setformData({
       // Update the formData state properly
       ...formData,
-      team_or_player: value,
+      single_or_team: value,
     });
   };
 
@@ -70,7 +72,7 @@ const Create = () => {
     setVisibility(value);
     setformData({
       ...formData,
-      Visibility: value,
+      visibility: value,
     });
   };
 
@@ -81,7 +83,7 @@ const Create = () => {
 
   const handleMaxMatchChange = (event) => {
     const newMaxMatch = parseInt(event.target.value, 10);
-    formData.max_match = newMaxMatch;
+    formData.no_of_matches = newMaxMatch;
   };
 
   // const handleTournamentType = () =>
@@ -111,7 +113,7 @@ const Create = () => {
     setType("ladder");
     setformData({
       ...formData,
-      type: "Ladder",
+      type: "ladder",
     });
   };
 
@@ -134,37 +136,73 @@ const Create = () => {
   };
 
   const isValid = (data) => {
-    if (data.Tournament_Name == "" || data.Tournament_Name == " ") {
+    if (data.name == "" || data.name == " ") {
       return false;
     }
-    if (data.Visibility == "" || data.Visibility == " ") {
+    if (data.visibility == "" || data.Visibility == " ") {
       return false;
     }
     if (data.type == "" || data.type == " ") {
       return false;
     }
-    if (data.team_or_player == "" || data.team_or_player == " ") {
+    if (data.single_or_team == "" || data.single_or_team == " ") {
       return false;
     }
     if (data.max_size == "" || data.max_size == " ") {
+      return false;
+    }
+    if (data.type == "Ladder" && data.no_of_matches == "") {
       return false;
     } else {
       return true;
     }
   };
 
-  const from_submit = (e) => {
+  const from_submit = async (e) => {
     e.preventDefault();
     const isValidForm = isValid(formData);
     console.log(isValidForm);
     if (isValidForm) {
       console.log("Valid");
       console.log(formData);
-      setAlertBox(true);
-      {/*Post data to the tournament*/}
-      {/*Get tournament Id and store it in local storage*/}
-      const tournament_id = 2
-      localStorage.setItem("tournament_creator", tournament_id);
+      
+      {
+        /*Post data to the tournament*/
+      }
+      try {
+        const response = await fetch("http://localhost/create/tournament", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.status === "failed") {
+          toast({
+            variant: "destructive",
+            title: data.errorCode,
+          });
+        } else {
+          setAlertBox(true);
+          console.log(data)
+        }
+      } catch (error) {
+        console.log(error.message);
+        toast({
+          title: "Something went wrong",
+          description:error.message,
+        });
+        {
+          /*Get tournament Id and store it in local storage*/
+        }
+        const tournament_id = 2;
+        localStorage.setItem("tournament_creator", tournament_id);
+      }
     } else {
       console.log("Invalid tournament Name");
       toast({
@@ -190,7 +228,7 @@ const Create = () => {
               <input
                 className=" border-solid border-2 transition-all border-[#e9e8e8] focus:border-[#e7a792] hover:border-[#e7a792] h-10 w-full rounded-md outline-none pl-5 pr-5"
                 type="text"
-                id="Tournament_Name"
+                id="name"
                 onChange={handleChange}
               />
               <div className=" flex justify-between">

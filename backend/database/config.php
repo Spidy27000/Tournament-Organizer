@@ -3,5 +3,5 @@ return [
     'hostname' => 'localhost',
     'username' => 'root',
     'password' => '',
-    'database' => 'tournament'
+    'database' => 'tournament1'
 ];

@@ -26,7 +26,7 @@ class TournamentControllor
         if($res){
             echo json_encode([
                 'status' => 'Failed',
-                'error' => 'Name is allready taken'
+                'error' => 'Name is already taken'
             ]);
             return;
 

@@ -20,7 +20,7 @@ class TournamentModel{
         return $count[0] > 0;
     }
     public function createLadder($name,$userId, $visibility, $maxSize, $singleOrTeam, $noOfMatches){
-        $sql = "INSERT INTO tournament(name, status, type, visibility, player_type, max_teams, total_matches, organizer_id) VALUES (?,'Not Started', 'Ladder', ?, ?, ?, ?); ";
+        $sql = "INSERT INTO tournament(name, status, type, visibility, player_type, max_teams, total_matches, organizer_id) VALUES (?,'Not Started', 'Ladder', ?, ?, ?, ?, ?); ";
         $playerType = $singleOrTeam == 'team' ? 'Team' : 'Single'; 
         $args = [$name, $visibility, $playerType, $maxSize, $noOfMatches, $userId];
         $id = self::$db->executeInsert($sql, $args, 'sssiii');
