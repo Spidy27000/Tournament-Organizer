@@ -1,6 +1,6 @@
 <?php
-require "database/TeamModel.php";
-require "database/UserModel.php";
+require_once "database/TeamModel.php";
+require_once "database/UserModel.php";
 
 class TeamControllor
 {

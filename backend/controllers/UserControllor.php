@@ -1,5 +1,5 @@
 <?php
-require "database/UserModel.php";
+require_once "database/UserModel.php";
 
 class UserControllor
 {
