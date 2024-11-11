@@ -229,4 +229,22 @@ class TournamentModel{
         $result->close();       
         
     }
+    public function getNextMatchId($matchId){
+        $sql = "SELECT id FROM Ladder_Match WHERE tournament_id = ( SELECT tournament_id FROM Ladder_Match WHERE id = ?) AND match_number = ( SELECT match_number + 1 FROM Ladder_Match WHERE id = ? );";
+        $args = [$matchId, $matchId];
+        $result = self::$db->executeQuery($sql, $args, "ii");
+        $res = self::$db->getResult($result ,count:1);
+        if (count($res) == 0){
+            return 0;
+        }
+        return $res['id'];
+        
+    }
+    public function getMyTournament($userId){
+        $sql = "SELECT id FROM `Tournament` WHERE organizer_id = ?;";
+        $args = [$userId];
+        $result = self::$db->executeQuery($sql, $args, "i");
+        $res = self::$db->getResult($result);
+        return $res;
+    }
 }

@@ -110,6 +110,7 @@ class TournamentControllor
         // }
         $id = $id['id'];
         $res = [];
+        $res['organizer_id'] = self::$tournamentModel->getOrganizer($id);
         $res['name'] = self::$tournamentModel->getName($id);
         $res['max_size'] = self::$tournamentModel->getMaxSize($id);
         $res['visibility'] = self::$tournamentModel->getVisibility($id);
@@ -122,7 +123,25 @@ class TournamentControllor
 
     ///view/mytournaments/{id:\d+}
     public static function viewMyTornaments($id){
+        $id = $id['id'];
+        $i = 0;
 
+        $myTournaments = self::$tournamentModel->getMyTournament($id);
+        foreach ($myTournaments as $torrId){
+            $_res = [];
+            $_res['id'] = $torrId;
+            $_res["oraganizer_id"] = self::$tournamentModel->getOrganizer($torrId);
+            $_res['name'] = self::$tournamentModel->getName($torrId);
+            $_res['max_size'] = self::$tournamentModel->getMaxSize($torrId);
+            $_res['visibility'] = self::$tournamentModel->getVisibility($torrId);
+            $_res['status'] = self::$tournamentModel->getStatus($torrId);
+            $_res['current_count'] = self::$tournamentModel->getCurrentCount($torrId);
+            $_res['type'] = self::$tournamentModel->getTournamentType($torrId);
+            $res[$i] = $_res;
+            $i++;
+
+        }
+        echo json_encode($res);
 
     }
 
@@ -212,8 +231,20 @@ class TournamentControllor
         }
         self::$tournamentModel->setStatus($matchId,"Finshed");
         $nextMatchId = self::$tournamentModel->getNextMatchId($matchId);
+        if ($nextMatchId == 0){
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Tournament Has ended'
+            ]);
+            return;
+
+        }
         self::$tournamentModel->setStatus($nextMatchId,"On Going");
 
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Next Match has started'
+        ]);
 
     }
 
