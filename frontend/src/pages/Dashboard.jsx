@@ -1,4 +1,4 @@
-  import React from "react";
+  import React, { useState } from "react";
   import { useEffect } from "react";
   import NavBar from "../component/NavBar";
   import { Button } from "../components/ui/button";
@@ -10,6 +10,8 @@
 
     const userData = JSON.parse(localStorage.getItem("userData"))
     console.log(userData)
+
+    const [allTournaments, setAllTournaments] = useState([{}])
 
     useEffect(()=>{
       let text = new SplitType("#heading");
@@ -26,12 +28,11 @@
       })
     },[])
 
-    useEffect(()=>
-    {
+    useEffect(()=>{
       const getAllTournament = async () => {
         try {
           const response = await fetch(
-            `http://localhost/view/team/${userData.team_id}`,
+            `http://localhost/view/allTournaments`,
             {
               method: "GET",
               headers: {
@@ -41,12 +42,17 @@
           );
   
           const data = await response.json();
-          console.log(data);
-          setTeamDetails(data);
+          setAllTournaments(data)
+          console.log(allTournaments)
         } catch (error) {
           console.log("not having teamData from database", error.message);
         }
-    },[]}))
+      }
+
+      getAllTournament()
+    },[])
+      
+
     
     //TODO: Api for all public tournament
     const tournamentsData = [
@@ -163,11 +169,21 @@
       }
     }
 
+    const renderLadderTournament = (tournament) =>
+      {
+        if (tournament.visibility == "Public")
+        {
+          return <LadderTournamentCard key={tournament.id} data={tournament}/>
+        }
+      }
+  
+
     return (
       <div className=" w-full p-9 scroll-smooth">
         <div className="">
           <h1 id="heading" className=" font-extrabold text-[3.5rem]">Hello, {userData.username}</h1>
           <div className=" pt-10 flex flex-wrap gap-6">
+            {allTournaments.map(renderLadderTournament)}
             {tournamentsData.map(renderCards)}
           </div>
         </div>

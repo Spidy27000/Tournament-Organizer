@@ -112,7 +112,7 @@ class TournamentControllor
         $res = [];
         $res['name'] = self::$tournamentModel->getName($id);
         $res['max_size'] = self::$tournamentModel->getMaxSize($id);
-        $res['visibility'] = self::$tournamentModel->getVisibilty($id);
+        $res['visibility'] = self::$tournamentModel->getVisibility($id);
         $res['status'] = self::$tournamentModel->getStatus($id);
         $res['current_count'] = self::$tournamentModel->getCurrentCount($id);
         $res['type'] = self::$tournamentModel->getTournamentType($id);
@@ -134,6 +134,7 @@ class TournamentControllor
         $i = 0;
         foreach ($ids as $id){
             $_res = [];
+            $_res['id'] = $id['id'];
             $_res["oraganizer_id"] = self::$tournamentModel->getOrganizer($id['id']);
             $_res['name'] = self::$tournamentModel->getName($id['id']);
             $_res['max_size'] = self::$tournamentModel->getMaxSize($id['id']);

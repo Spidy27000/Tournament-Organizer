@@ -24,7 +24,8 @@ const Login = ({ setUser }) => {
   });
 
   //checking localStorage
-  useEffect(() => {
+  
+useEffect(() => {
     const checkLocalStorage = () => {
       const storedCredentials = localStorage.getItem("userData");
       if (storedCredentials && !IsAuthorized) {
@@ -34,7 +35,6 @@ const Login = ({ setUser }) => {
 
     checkLocalStorage();
   }, []);
-
   const userInformation = async (id) => {
     try {
       const response = await fetch(`http://localhost/view/user/${id}`, {
