@@ -191,7 +191,6 @@ class TournamentControllor
             $_res = [];
             $_res['id'] = $matchId['id'];
             $_res['teams'] = self::$tournamentModel->getTeams($matchId['id']);
-            var_dump($_res);
         }
         
         $res["matches"] = $_res; 
