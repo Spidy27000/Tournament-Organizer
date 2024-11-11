@@ -134,6 +134,7 @@ class TournamentControllor
         $i = 0;
         foreach ($ids as $id){
             $_res = [];
+            $_res["oraganizer_id"] = self::$tournamentModel->getOrganizer($id['id']);
             $_res['name'] = self::$tournamentModel->getName($id['id']);
             $_res['max_size'] = self::$tournamentModel->getMaxSize($id['id']);
             $_res['visibility'] = self::$tournamentModel->getVisibility($id['id']);
@@ -200,6 +201,18 @@ class TournamentControllor
     }    
     ///update/scores
     public static function updateScores(){
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        $matchId = $data['id'];
+        $teams = $data['teams'];
+        foreach ($teams as $team){
+            self::$tournamentModel->updateScore($matchId, $team['id'],$team['points']);
+        }
+        self::$tournamentModel->setStatus($matchId,"Finshed");
+        $nextMatchId = self::$tournamentModel->getNextMatchId($matchId);
+        self::$tournamentModel->setStatus($nextMatchId,"On Going");
+
 
     }
 

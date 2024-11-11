@@ -75,6 +75,7 @@ class TournamentModel{
         $res = self::$db->getResult($result);
         return $res;
     }
+    
     public function getCurrentCount($id){
         $sql = "SELECT COUNT(*) FROM `Tournament_Teams` WHERE `tournament_id`=?;";
         $args = [$id];
@@ -164,6 +165,13 @@ class TournamentModel{
         $res = self::$db->getResult($result, count:1);
         return $res['match_number'];
     }
+    public function getOrganizer($id){
+        $sql = "SELECT organizer_id FROM tournament WHERE id = ?";
+        $args = [$id];
+        $result = self::$db->executeQuery($sql, $args, 'i');
+        $res = self::$db->getResult($result, count:1);
+        return $res['organizer_id'];
+    }
     public function getMatchIds($id){
         $sql = "SELECT id FROM `ladder_match` WHERE tournament_id = ?;";
         $args = [$id];
@@ -213,5 +221,12 @@ class TournamentModel{
 
         }
         return $name;
+    }
+    public function updateScore($matchId, $teamID, $points){
+        $sql = "UPDATE ladder_match_points SET points = ? WHERE team_id = ? AND match_id = ?;";
+        $args = [$points,$teamID, $matchId];
+        $result = self::$db->executeQuery($sql, $args, 'iii');
+        $result->close();       
+        
     }
 }
