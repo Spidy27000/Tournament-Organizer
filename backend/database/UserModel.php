@@ -67,4 +67,12 @@ class UserModel
         }
         return $res;
     }
+    public function getUserName($id){
+
+        $sql = "SELECT `username` FROM `Users` WHERE `id`=?;";
+        $args = [$id];
+        $result = self::$db->executeQuery($sql, $args, 's');
+        $res = self::$db->getResult($result, count:1);
+        return $res['username'];
+    }
 }
