@@ -12,7 +12,14 @@ const ViewTournament = () => {
   const param = useParams();
   const tournament_Id = param.tournamentId;
   const dummyData = JSON.parse(localStorage.getItem("dummyTournament"));
+  const userId = JSON.parse(localStorage.getItem("userId"));
   const [currentTournamentData, setCurrentTournament] = useState({})
+  const [isLastMatch, setIsLastMatch] = useState(false);
+  const [currentMatch, setCurrentMatch] = useState(1);
+  const [isCreator, setIsCreator] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [opacityConfetti, setOpacityConfetti] = useState(1);
+  const [isTeamLeader, setIsTeamLeader] = useState(true);
   // fetch tournament details from the id provided in the parameter
   useEffect(() => {
     const getCurrentTournament = async () => {
@@ -30,6 +37,7 @@ const ViewTournament = () => {
         const data = await response.json();
         console.log(data);
         setCurrentTournament(data)
+        console.log(c)
       } catch (error) {
         console.log("kuch to gadbad hai");
         toast({
@@ -37,8 +45,10 @@ const ViewTournament = () => {
           description: "Please try again later",
         });
       }
-      getCurrentTournament();
+      
+      
     };
+    getCurrentTournament();
   }, []);
 
   const [score, setScore] = useState({});
@@ -46,12 +56,7 @@ const ViewTournament = () => {
     height: window.innerHeight,
     width: window.innerWidth,
   });
-  const [isLastMatch, setIsLastMatch] = useState(false);
-  const [currentMatch, setCurrentMatch] = useState(1);
-  const [isCreator, setIsCreator] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [opacityConfetti, setOpacityConfetti] = useState(1);
-  const [isTeamLeader, setIsTeamLeader] = useState(true);
+
 
   const storedTournament = JSON.parse(
     localStorage.getItem("tournament_creator")
@@ -59,7 +64,7 @@ const ViewTournament = () => {
 
   useEffect(() => {
     const creator = () => {
-      if (storedTournament == tournament_Id) {
+      if (userId == currentTournamentData.organizer_id) {
         setIsCreator(true);
         console.log("ok");
       } else {
@@ -68,7 +73,7 @@ const ViewTournament = () => {
       }
     };
     creator();
-  }, []);
+  }, [currentTournamentData]);
 
   const handleSizing = () => {
     setWindowSize({
@@ -97,14 +102,15 @@ const ViewTournament = () => {
   }, [showConfetti]);
 
   const handleEndMatch = () => {
-    if (currentMatch < currentTournamentData.max_match) {
+    if (currentMatch < currentTournamentData.max_size) {
       setCurrentMatch((prev) => prev + 1);
+      console.log(currentMatch)
     }
-    if (currentMatch == currentTournamentData.max_match) {
+    if (currentMatch == currentTournamentData.max_size) {
       setIsLastMatch(true);
       setShowConfetti(true);
     }
-    console.log(score);
+    console.log(currentTournamentData)
   };
 
   return (

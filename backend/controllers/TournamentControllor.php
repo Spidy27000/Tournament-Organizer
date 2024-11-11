@@ -129,14 +129,14 @@ class TournamentControllor
         $myTournaments = self::$tournamentModel->getMyTournament($id);
         foreach ($myTournaments as $torrId){
             $_res = [];
-            $_res['id'] = $torrId;
-            $_res["oraganizer_id"] = self::$tournamentModel->getOrganizer($torrId);
-            $_res['name'] = self::$tournamentModel->getName($torrId);
-            $_res['max_size'] = self::$tournamentModel->getMaxSize($torrId);
-            $_res['visibility'] = self::$tournamentModel->getVisibility($torrId);
-            $_res['status'] = self::$tournamentModel->getStatus($torrId);
-            $_res['current_count'] = self::$tournamentModel->getCurrentCount($torrId);
-            $_res['type'] = self::$tournamentModel->getTournamentType($torrId);
+            $_res['id'] = $torrId["id"];
+            $_res["oraganizer_id"] = self::$tournamentModel->getOrganizer($torrId["id"]);
+            $_res['name'] = self::$tournamentModel->getName($torrId["id"]);
+            $_res['max_size'] = self::$tournamentModel->getMaxSize($torrId["id"]);
+            $_res['visibility'] = self::$tournamentModel->getVisibility($torrId["id"]);
+            $_res['status'] = self::$tournamentModel->getStatus($torrId["id"]);
+            $_res['current_count'] = self::$tournamentModel->getCurrentCount($torrId["id"]);
+            $_res['type'] = self::$tournamentModel->getTournamentType($torrId["id"]);
             $res[$i] = $_res;
             $i++;
 

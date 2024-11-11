@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@radix-ui/react-select";
+
 
 const LadderTournament = ({
   data,
@@ -158,57 +158,7 @@ const LadderTournament = ({
               </DialogContent>
             </Dialog>
           )}
-          {currentMatch == 1 && !creator && (
-            <Dialog>
-              <DialogTrigger>
-                <Button>Add Member</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <div className=" text-2xl font-bold">
-                    <p>Team {"Team_Name"}</p>
-                  </div>
-                  <DialogTitle className=" pb-5 flex justify-between items-center">
-                    <p>Add Member to the Team </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-2 hover:shadow-md transition-all duration-200 active:scale-95"
-                      onClick={handleAddMember}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </DialogTitle>
-                  <DialogDescription className=" flex flex-col gap-2">
-                    {members.map((member) => (
-                      <div
-                        key={member.id}
-                        className=" flex bg-[#fefdfd] rounded-md border-2 hover:shadow-md transition-all"
-                      >
-                        <div className=" w-[10%] text-center text-[1.0rem] border-r-2 mr-5 flex justify-center items-center">
-                          {member.id}
-                        </div>
-                        <div className=" flex justify-center items-center text-[1.0rem] w-[80%]">
-                          <input
-                            type="text"
-                            className=" outline-none h-10 text-md w-full"
-                            onChange={(e) =>
-                              handleInputChange(member.id, e.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogClose asChild>
-                  <Button className="pt-2" onClick={handleSubmit}>
-                    Submit
-                  </Button>
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-          )}
+        
         </div>
       </div>
       <div className="rounded-lg border-2">

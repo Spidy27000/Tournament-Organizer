@@ -19,7 +19,7 @@ const JoinTournament = () => {
   const tournamentId = param.tournamentName;
   const userId = JSON.parse(localStorage.getItem("userId"));
   const [member_size, setMemberSize] = useState(2);
-  const [dataLoaded, setDataLoaded] = useState(false)
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [teamDetails, setTeamDetails] = useState({
     team_name: "",
@@ -78,7 +78,6 @@ const JoinTournament = () => {
       }
       setIsEmpty(false);
     };
-
     handleIsEmpty();
   }, [tournamentData.max_size, tournamentData.teams]);
 
@@ -96,14 +95,14 @@ const JoinTournament = () => {
         const data = await response.json();
 
         console.log(data);
-        
-          userData.name = data.name
-          userData.team_id = data.team_id
-          userData.team_leader = data.team_leader
-        
-        console.log(userData)
 
-        setDataLoaded(true)
+        userData.name = data.name;
+        userData.team_id = data.team_id;
+        userData.team_leader = data.team_leader;
+
+        console.log(userData);
+
+        setDataLoaded(true);
 
         if (userData.team_id == "" || userData.team_id == null) {
           navigate(`/team`);
@@ -123,6 +122,7 @@ const JoinTournament = () => {
           });
           console.log("already in a team");
         }
+
         console.log(userData);
       } catch (error) {
         console.log("not having userData from database", error.message);
@@ -179,8 +179,7 @@ const JoinTournament = () => {
 
         <div className=" pt-10 flex flex-wrap gap-6 justify-center">
           {isEmpty && dataLoaded && userData.team_leader && (
-            <div               className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
->
+            <div className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2">
               <h1 className=" text-2xl font-bold">Team Leader</h1>
               <h2 className=" text-md font-semibold">{userData.name} (You)</h2>
 
