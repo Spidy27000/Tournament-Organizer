@@ -39,11 +39,12 @@ class TournamentModel{
         return $res['name'];
     }
     public function getMaxSize($id){
-        $sql = "SELECT `max_size` FROM `Tournament` WHERE `id`=?;";
+        $sql = "SELECT `max_teams` FROM `Tournament` WHERE `id`=?;";
         $args = [$id];
+        
         $result = self::$db->executeQuery($sql, $args, 'i');
         $res = self::$db->getResult($result, count:1);
-        return $res['max_size'];
+        return $res['max_teams'];
     }
     
     public function setStatus($id, $value){
@@ -53,13 +54,14 @@ class TournamentModel{
         $result->close();
     }
 
-    public function getVisibilty($id){
+    public function getVisibility($id){
         $sql = "SELECT `visibility` FROM `Tournament` WHERE `id`=?;";
         $args = [$id];
         $result = self::$db->executeQuery($sql, $args, 'i');
         $res = self::$db->getResult($result, count:1);
         return $res['visibility'];
     }
+
     public function getStatus($id){
         $sql = "SELECT `status` FROM `Tournament` WHERE `id`=?;";
         $args = [$id];

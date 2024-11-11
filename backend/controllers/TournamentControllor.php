@@ -132,14 +132,14 @@ class TournamentControllor
         $ids = self::$tournamentModel->getAllTournamentIds();
         $res = [];
         $i = 0;
-        foreach ($ids as $_ => $id){
+        foreach ($ids as $id){
             $_res = [];
-            $_res['name'] = self::$tournamentModel->getName($id);
-            $_res['max_size'] = self::$tournamentModel->getMaxSize($id);
-            $_res['visibility'] = self::$tournamentModel->getVisibilty($id);
-            $_res['status'] = self::$tournamentModel->getStatus($id);
-            $_res['current_count'] = self::$tournamentModel->getCurrentCount($id);
-            $_res['type'] = self::$tournamentModel->getTournamentType($id);
+            $_res['name'] = self::$tournamentModel->getName($id['id']);
+            $_res['max_size'] = self::$tournamentModel->getMaxSize($id['id']);
+            $_res['visibility'] = self::$tournamentModel->getVisibility($id['id']);
+            $_res['status'] = self::$tournamentModel->getStatus($id['id']);
+            $_res['current_count'] = self::$tournamentModel->getCurrentCount($id['id']);
+            $_res['type'] = self::$tournamentModel->getTournamentType($id['id']);
             $res[$i] = $_res;
             $i++;
         }
@@ -179,7 +179,6 @@ class TournamentControllor
         //     ],
         // }
 
-        $id = $id['id'];
         $res = [];
         $res['name'] = self::$tournamentModel->getName($id); 
         $res['curr_match'] = self::$tournamentModel->getCurrMatch($id);

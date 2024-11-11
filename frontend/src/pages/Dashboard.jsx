@@ -25,6 +25,28 @@
         duration: 0.5
       })
     },[])
+
+    useEffect(()=>
+    {
+      const getAllTournament = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost/view/team/${userData.team_id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+  
+          const data = await response.json();
+          console.log(data);
+          setTeamDetails(data);
+        } catch (error) {
+          console.log("not having teamData from database", error.message);
+        }
+    },[]}))
     
     //TODO: Api for all public tournament
     const tournamentsData = [
