@@ -35,7 +35,8 @@
         team2_name: "Lightning Dragons",
         team1_score: 3,
         team2_score: 2,
-        status: 'on going',
+        status: 'completed',
+        type: "single_elimination"
       },
       {
         id: 2,
@@ -44,7 +45,8 @@
         team2_name: "Desert Eagles",
         team1_score: 5,
         team2_score: 5,
-        status: 'on going',
+        status: 'completed',
+        type: "single_elimination"
       },
       {
         id: 3,
@@ -54,6 +56,7 @@
         team1_score: 0,
         team2_score: 0,
         status: 'upcoming',
+        type: "single_elimination"
       },
       {
         id: 4,
@@ -63,6 +66,7 @@
         team1_score: 4,
         team2_score: 2,
         status: 'completed',
+        type: "double_elimination"
       },
       {
         id: 5,
@@ -71,7 +75,8 @@
         team2_name: "Metro Stars",
         team1_score: 1,
         team2_score: 3,
-        status: 'on going',
+        status: 'completed',
+        type: "singe_elimination"
       },
       {
         id: 6,
@@ -81,6 +86,7 @@
         team1_score: 0,
         team2_score: 0,
         status: 'upcoming',
+        type: "single_elimination"
       },
       {
         id: 7,
@@ -90,6 +96,7 @@
         team1_score: 6,
         team2_score: 3,
         status: 'completed',
+        type: "single_elimination"
       },
       {
         id: 8,
@@ -99,6 +106,7 @@
         team1_score: 2,
         team2_score: 2,
         status: 'on going',
+        type: "single_elimination"
       },
       {
         id: 9,
@@ -108,6 +116,7 @@
         team1_score: 0,
         team2_score: 0,
         status: 'upcoming',
+        type: "single_elimination"
       },
       {
         id: 10,
@@ -117,6 +126,8 @@
         status: "on going"
       }
     ];
+
+    localStorage.setItem("dummyTournament", JSON.stringify(tournamentsData))
 
     const renderCards = (tournament) =>
     {

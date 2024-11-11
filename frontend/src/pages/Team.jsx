@@ -13,6 +13,7 @@ import {
 import { Plus, Minus } from "lucide-react";
 const Team = () => {
   const userId = JSON.parse(localStorage.getItem("userId"));
+  const user = JSON.parse(localStorage.getItem("userData"));
   const [isLeader, setIsLeader] = useState(false);
   const [isInTeam, setIsInTeam] = useState(false);
   const [addedMember, setAddedMember] = useState(false)
@@ -24,6 +25,10 @@ const Team = () => {
     no_of_members: 0,
     members: [],
   });
+  const [leaveTeam, setLeaveTeam] = useState({
+    team_id: "",
+    username: ""
+  })
   const [addMember, setAddMember] = useState({
     team_id: "",
     username: "",
@@ -198,6 +203,38 @@ const Team = () => {
     }
   }
 
+  const handleLeaveTeam =  async () =>
+  {
+    leaveTeam.team_id = userData.team_id
+    leaveTeam.username = user.username
+    try {
+      const response = await fetch(
+        `http://localhost/remove/member`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(leaveTeam),
+        }
+      );
+
+      const data = await response.json();
+      console.log(data)
+      if (data.status == "Failed")
+      {
+        toast({
+          variant: "destructive",
+          title: "Failed",
+          description: data.error
+        })
+      }
+      setRemoveMember(true)
+    } catch (error) {
+      console.log("not having teamData from database", error.message);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.team_name == "" || formData.team_name == " ") {
@@ -247,8 +284,16 @@ const Team = () => {
     <>
       <div className=" p-9">
         <div className=" flex justify-between items-center">
-          <h1 className=" text-5xl font-extrabold">Team {teamDetails.team_name}</h1>
+          <div>
+          <h1 className=" text-5xl font-extrabold">Team {isInTeam && (teamDetails.team_name)}</h1>
+          </div>
+          
           <div className=" flex gap-2">
+          {isInTeam && !isLeader && (
+            <div className="">
+              <Button onClick={handleLeaveTeam}>Leave Team</Button>
+              </div>
+          )}
           {isLeader && (
             <div>
               <Dialog>
@@ -258,7 +303,7 @@ const Team = () => {
                 <DialogContent>
                   <DialogHeader>
                     <div className=" text-2xl font-bold">
-                      <p>Team {"Team_Name"}</p>
+                      <p>Team {teamDetails.team_name}</p>
                     </div>
                     <DialogTitle className=" pb-5 flex justify-between items-center">
                       <p>Add Member to the Team </p>
@@ -326,14 +371,16 @@ const Team = () => {
           )}
           </div>
         </div>
-        {!isInTeam && <h1 className=" font-bold pt-4 text-3xl">Create Team</h1>}
+        {}
         <div className=" flex justify-center pt-2">
           {!isInTeam && (
+            
             <form
               action=""
               onSubmit={handleSubmit}
               className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
             >
+              <h1 className=" font-extrabold pb-4 text-4xl">Create Team</h1>
               <h1 className=" text-2xl font-bold">Team Leader</h1>
               <h2 className=" text-md font-semibold">{userData.name}</h2>
 

@@ -12,9 +12,12 @@ const ViewTournament = () => {
   const param = useParams();
   const tournament_Id = param.tournamentId;
   // fetch tournament details from the id provided in the parameter
+  const dummyData = JSON.parse(localStorage.getItem("dummyTournament"))
+
+
   const tournamentData = {
     Id: tournament_Id,
-    tournament_type: "ladder",
+    tournament_type: dummyData[tournament_Id - 1].type,
     max_match: 5,
     teams: 4
   };
@@ -96,7 +99,7 @@ const ViewTournament = () => {
   return (
     <div className=" w-full p-9">
       <h1 id="heading" className=" font-extrabold text-[3.5rem]">
-        Tournament_Name
+        {dummyData[tournament_Id - 1].tournamentName}
       </h1>
       {showConfetti && (
         <div className=" ">

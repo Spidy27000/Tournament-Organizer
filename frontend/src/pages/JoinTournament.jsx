@@ -13,13 +13,13 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-
 const JoinTournament = () => {
   const param = useParams();
   const { toast } = useToast();
   const tournamentId = param.tournamentName;
   const userId = JSON.parse(localStorage.getItem("userId"));
   const [member_size, setMemberSize] = useState(2);
+  const [dataLoaded, setDataLoaded] = useState(false)
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [teamDetails, setTeamDetails] = useState({
     team_name: "",
@@ -52,29 +52,22 @@ const JoinTournament = () => {
 
   //handling member select
   const handleMemberSelect = (memberId, username) => {
-    setSelectedMembers(prev => {
+    setSelectedMembers((prev) => {
       // Check if the username already exists in the array
-      const existingIndex = prev.findIndex(member => member.username === username);
-      
-      if (existingIndex !== -1) {
-        // If member exists, remove them (unchecked)
-        return prev.filter(member => member.username !== username);
-      } else {
+      const existingIndex = prev.findIndex(
+        (member) => member.username === username
+      );
 
+      // If member exists, remove them (unchecked)
+      if (existingIndex !== -1) {
+        return prev.filter((member) => member.username !== username);
+      } else {
         return [...prev, { username, id: memberId }];
       }
     });
   };
 
-  useEffect(() => {
-    if (createdTeam) {
-      navigate(`/ViewTournament/${tournamentId}`);
-      toast({
-        title: "Success",
-        description: "Team Created Successfully",
-      });
-    }
-  }, [createdTeam]);
+  useEffect(() => {}, [userData]);
 
   //checking if the tournament is full or not
   useEffect(() => {
@@ -87,10 +80,10 @@ const JoinTournament = () => {
     };
 
     handleIsEmpty();
-  },[tournamentData.max_size, tournamentData.teams])
+  }, [tournamentData.max_size, tournamentData.teams]);
 
   //getting user details
-  useEffect(()=>{
+  useEffect(() => {
     const handleUserData = async () => {
       try {
         const response = await fetch(`http://localhost/view/user/${userId}`, {
@@ -101,49 +94,71 @@ const JoinTournament = () => {
         });
 
         const data = await response.json();
+
         console.log(data);
-        setUserData({
-          team_id: data.team_id,
-          team_leader: data.team_leader,
-          name: data.name,
-        });
+        
+          userData.name = data.name
+          userData.team_id = data.team_id
+          userData.team_leader = data.team_leader
+        
+        console.log(userData)
+
+        setDataLoaded(true)
+
+        if (userData.team_id == "" || userData.team_id == null) {
+          navigate(`/team`);
+          toast({
+            variant: "destructive",
+            title: "No Team Found",
+            description: "Please create or join a team",
+          });
+          console.log(userData);
+          return;
+        }
+
+        if (!userData.team_leader) {
+          navigate(`/ViewTournament/${tournamentId}`);
+          toast({
+            title: "You are already in a team",
+          });
+          console.log("already in a team");
+        }
+        console.log(userData);
       } catch (error) {
         console.log("not having userData from database", error.message);
       }
     };
     handleUserData();
-  },[userId])
-    
+  }, []);
 
   //getting team details
-    useEffect(()=>{
-      const getTeamDetails = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost/view/team/${userData.team_id}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-  
-          const data = await response.json();
-          console.log(data);
-          setTeamDetails(data);
-        } catch (error) {
-          console.log("not having teamData from database", error.message);
-        }
-      };
-  
-      getTeamDetails();
-    },[userData.team_id])
-  
+  useEffect(() => {
+    const getTeamDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost/view/team/${userData.team_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+        setTeamDetails(data);
+      } catch (error) {
+        console.log("not having teamData from database", error.message);
+      }
+    };
+
+    getTeamDetails();
+  }, [userData.team_id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(selectedMembers)
+    navigate(`/ViewTournament/${tournamentId}`);
   };
 
   return (
@@ -163,12 +178,9 @@ const JoinTournament = () => {
         )}
 
         <div className=" pt-10 flex flex-wrap gap-6 justify-center">
-          {isEmpty && (
-            <form
-              action=""
-              onSubmit={handleSubmit}
-              className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
-            >
+          {isEmpty && dataLoaded && userData.team_leader && (
+            <div               className="w-[42%] bg-[#f2efed] p-5 border-2 rounded-lg shadow-lg flex flex-col gap-2"
+>
               <h1 className=" text-2xl font-bold">Team Leader</h1>
               <h2 className=" text-md font-semibold">{userData.name} (You)</h2>
 
@@ -177,9 +189,9 @@ const JoinTournament = () => {
                 {teamDetails.team_name}
               </h2>
               <div>
-              <h1 className=" text-2xl font-bold pb-2 pt-5">Members</h1>
-                  {selectedMembers.map((user,index) => (
-                    <div
+                <h1 className=" text-2xl font-bold pb-2 pt-5">Members</h1>
+                {selectedMembers.map((user, index) => (
+                  <div
                     key={index}
                     className="flex bg-[#fefdfd] rounded-md border-2 p-3 hover:shadow-md transition-all mb-5"
                   >
@@ -190,7 +202,7 @@ const JoinTournament = () => {
                       {user.username}
                     </div>
                   </div>
-                  ))}
+                ))}
                 <Dialog className=" text-left">
                   <DialogTrigger>
                     <Button className="">Add Member</Button>
@@ -216,7 +228,10 @@ const JoinTournament = () => {
                               <p>{member.name}</p>
                               <Checkbox
                                 id={`checkbox-${index}`}
-                                checked={selectedMembers.some(selectedMember => selectedMember.username === member.username)}
+                                checked={selectedMembers.some(
+                                  (selectedMember) =>
+                                    selectedMember.username === member.username
+                                )}
                                 onCheckedChange={() =>
                                   handleMemberSelect(index, member.username)
                                 }
@@ -234,12 +249,12 @@ const JoinTournament = () => {
                 </Dialog>
               </div>
               <Button
-                type="submit"
+                onClick={handleSubmit}
                 className=" hover:translate-y-[-3px] w-full transition-all mt-5"
               >
                 Join Tournament
               </Button>
-            </form>
+            </div>
           )}
         </div>
       </div>
