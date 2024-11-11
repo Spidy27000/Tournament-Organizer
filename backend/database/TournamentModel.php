@@ -1,5 +1,9 @@
 <?php
+
 require_once "Database.php";
+require_once "UserModel.php";
+require_once "TeamModel.php";
+
 
 class TournamentModel{
     private static $db;
@@ -150,5 +154,62 @@ class TournamentModel{
                 self::$db->executeInsert($sql, $args, 'iis');
             }
         }
+    }
+    public function getCurrMatch($id){
+        $sql = "SELECT match_number FROM Ladder_match WHERE tournament_id = ? AND status = ?;";
+        $args = [$id, "On Going"];
+        $result = self::$db->executeQuery($sql, $args, 'is');
+        $res = self::$db->getResult($result, count:1);
+        return $res['match_number'];
+    }
+    public function getMatchIds($id){
+        $sql = "SELECT id FROM `ladder_match` WHERE tournament_id = ?;";
+        $args = [$id];
+        $result = self::$db->executeQuery($sql, $args, "i");
+        $res = self::$db->getResult($result);
+        return $res;
+    }
+    public function getTeams($id){
+        $sql = "SELECT team_id, points FROM ladder_match_points where match_id = ?";
+        $args = [$id];
+        $result = self::$db->executeQuery($sql, $args, "i");
+        $res = self::$db->getResult($result);
+        foreach ($res as $it){
+            $it["username"] = $this->getUsernameFromTournamentTeam($it['team_id']);
+        }
+        return $res;
+
+    }
+
+    private function getTypeFromTournamentTeam($id){
+        $sql = "SELECT type FROM `tournament_teams` WHERE id = ?;";
+        $args = [$id];
+        $result = self::$db->executeQuery($sql, $args, "i");
+        $res = self::$db->getResult($result ,count:1);
+        return $res['type'];
+    }    
+    public function getUsernameFromTournamentTeam($id){
+        $r = $this->getTypeFromTournamentTeam($id);
+        if($r == "Team"){
+
+            $sql = "SELECT team_id FROM `tournament_teams` WHERE id = ?;";
+            $args = [$id];
+            $result = self::$db->executeQuery($sql, $args, "i");
+            $res = self::$db->getResult($result ,count:1);
+            $teamId = $res['team_id'];
+            $teamModel = new TeamModel();
+            $name = $teamModel->getTeamName($id);
+        }else{
+
+            $sql = "SELECT user_id FROM `tournament_teams` WHERE id = ?;";
+            $args = [$id];
+            $result = self::$db->executeQuery($sql, $args, "i");
+            $res = self::$db->getResult($result ,count:1);
+            $userId = $res['team_id'];
+            $userModel = new UserModel();
+            $name = $userModel->getUserName($id);
+
+        }
+        return $name;
     }
 }

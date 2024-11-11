@@ -163,23 +163,43 @@ class TournamentControllor
     ///view/tournamentDetails/{id:\d+}
     public static function viewDetails($id){
         $id = $id['id'];
-        {
-            "name":"",
-            "currrentMatch":'',
-            "totalMatch":'',
-            "matches":[
-                {
-                    "match_no" :''
-                    "name": ""
-                    "points": ""
+        // {
+        //     "name":"",
+        //     "currrentMatch":'',
+        //     "totalMatch":'',
+        //     "matches":[
+        //         {
+        //             "match_id" :''
+        //             "teams": [
+        //                 "team_id": "",
+        //                 "username" : "",
+        //                 "points" : ""
+        //             ]
+        //         }
+        //     ],
+        // }
 
-                }
-            ],
+        $id = $id['id'];
+        $res = [];
+        $res['name'] = self::$tournamentModel->getName($id); 
+        $res['curr_match'] = self::$tournamentModel->getCurrMatch($id);
+        $res['total_match'] = self::$tournamentModel->getMaxSize($id);
+        $_res = [];
+        $matchIds = self::$tournamentModel->getMatchIds($id);
+        $i = 0;
+        foreach ($matchIds as $matchId){
+            $_res = [];
+            $_res['id'] = $matchId['id'];
+            $_res['teams'] = self::$tournamentModel->getTeams($matchId['id']);
+            var_dump($_res);
         }
-
         
+        $res["matches"] = $_res; 
+        echo json_encode($res);
 
-    }
+
+
+    }    
     ///update/scores
     public static function updateScores(){
 
